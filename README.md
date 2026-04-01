@@ -1,1 +1,1491 @@
 # portfolio.github.io
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지지옥션 그로스 케이스스터디 — 유효상</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E0E0E;
+    --ink-mid: #3A3A3A;
+    --muted: #888888;
+    --muted-light: #BBBBBB;
+    --bg: #FFFFFF;
+    --bg-off: #F7F7F7;
+    --border: #E4E4E4;
+    --border-strong: #C0C0C0;
+    --accent: #1A56DB;
+    --accent-word: #7B4B2A;
+    --up: #1A7A4A;
+    --down: #B83232;
+    --stable: #7A6020;
+    --sans: "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", monospace;
+    --max: 800px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 52px;
+  }
+  .nav-logo { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-decoration: none; color: var(--muted); transition: color 0.15s; }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero { max-width: var(--max); margin: 0 auto; padding: 80px 48px 72px; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 24px; }
+  .hero h1 { font-family: var(--sans); font-size: clamp(38px, 5.5vw, 60px); font-weight: 700; line-height: 1.2; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 56px; }
+  .hero h1 .accent-word { color: var(--accent-word); }
+  .hero-subtitle { font-size: 15px; color: var(--muted); line-height: 1.9; max-width: 520px; margin-bottom: 48px; font-weight: 300; }
+  .hero-divider { width: 32px; height: 1px; background: var(--border-strong); margin-bottom: 28px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 4px 10px; background: var(--bg-off); border: 1px solid var(--border); border-radius: 2px; color: var(--muted); letter-spacing: 0.03em; }
+  .tag.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .hero-info-row { display: flex; gap: 48px; flex-wrap: wrap; }
+  .hero-info-item { display: flex; flex-direction: column; gap: 5px; }
+  .hero-info-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-light); }
+  .hero-info-value { font-size: 13px; font-weight: 400; color: var(--ink-mid); }
+  .hero-subtitle-new { font-size: 14px; color: var(--muted); line-height: 1.9; max-width: 520px; margin-bottom: 48px; font-weight: 300; }
+
+  /* TOC */
+  .toc-section { max-width: var(--max); margin: 0 auto; padding: 0 48px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr; }
+  .toc-card { padding: 40px 32px 40px 0; border-right: 1px solid var(--border); }
+  .toc-card:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
+  .toc-card-num { font-family: var(--mono); font-size: 11px; color: var(--muted-light); letter-spacing: 0.06em; margin-bottom: 16px; }
+  .toc-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 10px; }
+  .toc-card h3 { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; line-height: 1.45; letter-spacing: -0.01em; }
+  .toc-card > p { font-size: 12px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+  .toc-period { font-family: var(--mono); font-size: 10px; color: var(--muted-light); margin-top: 8px; margin-bottom: 16px; }
+  .toc-chapters { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+  .toc-chapters li { font-size: 11px; color: var(--muted); padding-left: 0; border-left: none; }
+  .toc-chapters a { color: var(--muted); text-decoration: none; }
+  .toc-chapters a:hover { color: var(--ink); }
+
+  /* CASE */
+  .case { max-width: var(--max); margin: 0 auto; padding: 72px 48px; border-bottom: 1px solid var(--border); }
+  .case-header { margin-bottom: 56px; }
+  .case-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .case-header h2 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; line-height: 1.35; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 16px; }
+  .case-header .subtitle { font-size: 14px; color: var(--muted); max-width: 540px; line-height: 1.9; }
+  .case-period { display: inline-block; font-family: var(--mono); font-size: 10px; color: var(--muted-light); border: 1px solid var(--border); padding: 3px 9px; margin-top: 16px; letter-spacing: 0.04em; }
+
+  /* SECTION */
+  .section { margin-bottom: 52px; }
+  .section-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 22px; padding-bottom: 12px; border-bottom: 1.5px solid var(--border-strong); }
+  .section-num { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; flex-shrink: 0; }
+  .section-title h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+  .section p { margin-bottom: 14px; color: var(--ink-mid); line-height: 1.9; font-size: 14px; }
+  .section p strong { font-weight: 500; color: var(--ink); }
+
+  /* CALLOUT */
+  .callout { border-left: 2px solid var(--border-strong); padding: 14px 18px; margin: 20px 0; font-size: 13.5px; line-height: 1.85; color: var(--ink-mid); background: var(--bg-off); }
+  .callout.highlight { border-color: var(--accent); background: #F0F5FF; color: #1A3A7A; }
+  .callout.warning { border-color: #C8A832; background: #FDFAF0; color: #5A4A10; }
+  .callout strong { font-weight: 500; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead { border-bottom: 1.5px solid var(--ink); }
+  th { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; text-align: left; padding: 9px 12px; color: var(--muted); background: var(--bg-off); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; color: var(--ink-mid); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-off); }
+  td strong { font-weight: 500; color: var(--ink); }
+  .trend-up { color: var(--up); }
+  .trend-down { color: var(--down); }
+  .trend-stable { color: var(--stable); }
+
+  /* HYPOTHESIS */
+  .hypothesis { border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--border); padding: 20px 0; margin: 24px 0; }
+  .hypothesis-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 10px; }
+  .hypothesis p { font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--ink); margin-bottom: 0 !important; }
+
+  /* METRICS */
+  .metric-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 20px 0; }
+  .metric-card { background: var(--bg); padding: 20px; text-align: left; }
+  .metric-value { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--ink); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
+  .metric-value.positive { color: var(--up); }
+  .metric-value.negative { color: var(--down); }
+  .metric-label { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .metric-sublabel { font-family: var(--mono); font-size: 10px; color: var(--muted-light); margin-top: 4px; }
+
+  /* CODE */
+  .code-block { font-family: var(--mono); font-size: 12.5px; background: #0E0E0E; color: #C8C8C8; padding: 18px 20px; margin: 18px 0; line-height: 1.8; overflow-x: auto; }
+  .code-block .comment { color: #555; }
+  .code-block .changed { color: #7DC88A; }
+
+  /* FUNNEL */
+  .funnel-steps { display: flex; flex-direction: column; margin: 18px 0; }
+  .funnel-step { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 1px solid var(--border); border-top: none; background: var(--bg); font-size: 13px; color: var(--ink-mid); }
+  .funnel-step:first-child { border-top: 1px solid var(--border); }
+  .funnel-step .step-icon { font-family: var(--mono); font-size: 10px; color: var(--muted-light); min-width: 24px; }
+  .funnel-step .step-label { flex: 1; }
+  .funnel-step .step-note { font-family: var(--mono); font-size: 10px; color: var(--down); }
+  .funnel-step.bottleneck { background: #FDF5F5; border-color: #E8C0C0; }
+
+  /* ITEM LIST */
+  .item-list { list-style: none; display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 16px; }
+  .item-list li { background: var(--bg); padding: 20px 22px; }
+  .item-list li .item-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.01em; border-left: 2px solid transparent; padding-left: 10px; }
+  .item-list li .item-body { font-size: 13px; color: var(--muted); line-height: 1.85; margin: 0; }
+  .insight .item-title { border-left-color: var(--accent); }
+  .limit .item-title { border-left-color: #C8A832; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* FOOTER */
+  footer { max-width: var(--max); margin: 0 auto; padding: 32px 48px 56px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--muted-light); letter-spacing: 0.05em; }
+
+  /* FADE */
+  .fade-in { opacity: 0; transform: translateY(12px); animation: fadeUp 0.45s ease forwards; }
+  .fade-in:nth-child(1) { animation-delay: 0.05s; }
+  .fade-in:nth-child(2) { animation-delay: 0.12s; }
+  .fade-in:nth-child(3) { animation-delay: 0.19s; }
+  .fade-in:nth-child(4) { animation-delay: 0.26s; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 640px) {
+    nav, .hero, .toc-section, .case, footer { padding-left: 20px; padding-right: 20px; }
+    .toc-section { grid-template-columns: 1fr; }
+    .toc-card { border-right: none; border-bottom: 1px solid var(--border); padding-left: 0; padding-right: 0; }
+    .toc-card:last-child { padding-left: 0; border-bottom: none; }
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+
+  /* SIDEBAR TOC */
+  .page-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+  }
+  .main-content {
+    flex: 0 0 var(--max);
+    min-width: 0;
+    max-width: var(--max);
+    width: 100%;
+  }
+  .sidebar-toc {
+    position: sticky;
+    top: 68px;
+    width: 168px;
+    flex-shrink: 0;
+    margin-left: 36px;
+    padding-top: 80px;
+    align-self: flex-start;
+  }
+  .sidebar-toc-group {
+    margin-bottom: 24px;
+  }
+  .sidebar-toc-group-label {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted-light);
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .sidebar-toc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .sidebar-toc-list a {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted-light);
+    text-decoration: none;
+    padding: 4px 0 4px 10px;
+    border-left: 1.5px solid transparent;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .sidebar-toc-list a:hover {
+    color: var(--ink-mid);
+  }
+  .sidebar-toc-list a.active {
+    color: var(--ink);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1120px) {
+    .sidebar-toc { display: none; }
+  }
+
+
+  .causal-chain { display:flex; align-items:stretch; margin:20px 0; border:1px solid var(--border); }
+  .causal-item { flex:1; padding:14px 16px; background:var(--bg); }
+  .causal-item + .causal-item { border-left:1px solid var(--border); }
+  .causal-risk { background:#FDF5F0; }
+  .causal-arrow { display:flex; align-items:center; padding:0 6px; font-size:14px; color:var(--muted-light); background:var(--bg-off); border-top:1px solid var(--border); border-bottom:1px solid var(--border); flex-shrink:0; }
+  .causal-label { font-size:12px; font-weight:500; color:var(--ink); margin-bottom:5px; }
+  .causal-sub { font-family:var(--mono); font-size:10px; color:var(--muted); line-height:1.6; }
+  .causal-risk .causal-label { color:#B83232; }
+  .conclusion-block { border:1px solid var(--border); margin:20px 0; display:flex; flex-direction:column; gap:1px; background:var(--border); }
+  .conclusion-row { display:flex; background:var(--bg); align-items:stretch; }
+  .conclusion-icon { font-family:var(--mono); font-size:13px; color:var(--muted-light); padding:14px 0; background:var(--bg-off); border-right:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; width:44px; }
+  .conclusion-text { padding:14px 18px; font-size:13.5px; color:var(--ink-mid); line-height:1.85; }
+  .conclusion-emphasis { background:var(--bg-off); }
+  .conclusion-emphasis .conclusion-icon { color:var(--ink); background:var(--border); }
+  .conclusion-emphasis .conclusion-text { color:var(--ink); }
+  .chart-container { margin:20px 0; background:var(--bg-off); border:1px solid var(--border); padding:20px 20px 12px; }
+  .chart-legend { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:14px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.04em; }
+  .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+
+  .kpi-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:20px 0; }
+  .kpi-card { background:var(--bg-off); padding:16px 18px; border:1px solid var(--border); }
+  .kpi-val { font-family:var(--mono); font-size:22px; font-weight:500; color:var(--ink); line-height:1; margin-bottom:6px; letter-spacing:-0.02em; }
+  .kpi-label { font-size:11px; color:var(--muted); line-height:1.6; }
+  .resource-block { border:1px solid var(--border); margin:20px 0; }
+  .resource-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--border); background:var(--bg-off); }
+  .resource-title { font-size:12px; font-weight:500; color:var(--ink); }
+  .resource-badge { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:0.04em; }
+  .resource-rows { display:flex; flex-direction:column; }
+  .resource-row { display:flex; align-items:center; gap:14px; padding:11px 14px; border-bottom:1px solid var(--border); }
+  .resource-row:last-child { border-bottom:none; }
+  .resource-name { font-size:12px; color:var(--ink-mid); min-width:200px; }
+  .bar-wrap { flex:1; height:5px; background:var(--border); }
+  .bar-fill { height:100%; }
+  .bar-high { background:var(--ink); }
+  .bar-low { background:var(--border-strong); }
+  .resource-pct { font-family:var(--mono); font-size:11px; color:var(--muted); min-width:36px; text-align:right; }
+  .resource-pct-dim { color:var(--muted-light); }
+
+
+  .inline-stat { font-family:var(--mono); font-size:12px; font-weight:500; color:var(--ink); background:var(--bg-off); border:1px solid var(--border); padding:1px 6px; }
+  .resource-row-growth { background:var(--bg-off); }
+  .resource-name-dim { color:var(--muted-light); font-size:11.5px; }
+
+
+  .aha-table-wrap { margin: 20px 0; }
+  .aha-table-title { display:flex; align-items:baseline; gap:8px; margin-bottom:8px; font-size:13px; font-weight:500; color:var(--ink); flex-wrap:wrap; }
+  .aha-sub { font-size:10px; font-weight:400; color:var(--muted-light); }
+  .aha-top4-badge { font-family:var(--mono); font-size:9px; letter-spacing:.08em; padding:2px 7px; background:var(--bg-off); border:1px solid var(--border); color:var(--muted); margin-left:auto; }
+  .aha-hm-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .aha-hm-table th { font-family:var(--mono); font-size:9px; letter-spacing:.07em; text-transform:uppercase; text-align:center; padding:7px 10px; color:var(--muted); background:var(--bg-off); border-bottom:1.5px solid var(--ink); }
+  .aha-hm-table th:first-child { text-align:left; }
+  .aha-hm-table td { padding:9px 10px; border-bottom:0.5px solid var(--border); text-align:center; vertical-align:middle; }
+  .aha-hm-table td:first-child { text-align:left; font-size:11.5px; color:var(--ink); font-weight:500; }
+  .aha-hm-table tr:last-child td { border-bottom:none; }
+  .aha-hm-table tr:hover .ah1 { background:#DCDCDC; }
+  .aha-hm-table tr:hover .ah2 { background:#C8C8C8; }
+  .aha-hm-table tr:hover .ah3 { background:#888888; }
+  .aha-hm-table tr:hover .ah4 { background:#2A2A2A; }
+  .aha-hm-table tr:hover td:first-child { background:var(--bg-off); }
+  .aha-cv { display:flex; flex-direction:column; align-items:center; gap:1px; }
+  .aha-small-note { font-size:9px; color:var(--muted-light); font-weight:400; display:block; margin-top:1px; }
+  .aha-merged { font-size:9px; color:var(--muted-light); font-weight:400; margin-left:4px; }
+  .ah1 { background:#F7F7F7; } .ah1 .aha-n,.ah1 .aha-p { color:#BBBBBB; }
+  .ah2 { background:#E4E4E4; } .ah2 .aha-n,.ah2 .aha-p { color:#3A3A3A; }
+  .ah3 { background:#A0A0A0; } .ah3 .aha-n { color:#fff; font-weight:500; } .ah3 .aha-p { color:rgba(255,255,255,0.8); }
+  .ah4 { background:#0E0E0E; } .ah4 .aha-n { color:#fff; font-weight:500; } .ah4 .aha-p { color:rgba(255,255,255,0.7); }
+  .aha-n { font-size:11.5px; font-weight:500; }
+  .aha-p { font-size:10px; opacity:0.8; }
+  .aha-jump { display:inline-block; font-family:var(--mono); font-size:8px; color:#7B4B2A; background:#F5EDE6; border:0.5px solid #D4A882; padding:0 4px; margin-left:4px; vertical-align:middle; }
+  .aha-note { font-size:11px; color:var(--muted-light); margin-top:6px; font-style:italic; }
+  .aha-interp { border:1px solid var(--border); margin:16px 0; }
+  .aha-interp-header { padding:8px 14px; background:var(--bg-off); border-bottom:1px solid var(--border); font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .aha-interp-row { display:flex; align-items:stretch; border-bottom:0.5px solid var(--border); }
+  .aha-interp-row:last-child { border-bottom:none; }
+  .aha-interp-cat { font-size:11.5px; font-weight:500; color:var(--ink); padding:11px 14px; min-width:140px; border-right:1px solid var(--border); background:var(--bg-off); display:flex; align-items:center; }
+  .aha-interp-body { font-size:12px; color:var(--muted); padding:11px 16px; line-height:1.7; }
+  .aha-interp-body strong { font-weight:500; color:var(--ink); }
+  .section-subtitle-bar { font-size:13px; font-weight:500; color:var(--ink); margin:24px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .aha-bar-section { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:20px; }
+  .aha-bar-title { font-size:12px; font-weight:500; color:var(--ink); margin-bottom:10px; }
+  .aha-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .aha-bar-lbl { font-family:var(--mono); font-size:10px; color:var(--muted); min-width:40px; text-align:right; }
+  .aha-bar-track { flex:1; height:22px; background:var(--bg-off); display:flex; align-items:center; }
+  .aha-bar-fill { height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
+  .alo { background:#D8D8D8; } .amid { background:#888888; } .ahi { background:#0E0E0E; }
+  .aha-bar-text { font-family:var(--mono); font-size:10px; color:#fff; font-weight:500; white-space:nowrap; }
+  .aha-bar-note { font-size:10.5px; color:var(--muted-light); margin-top:4px; }
+
+
+  .hyp-block { border-top:1.5px solid var(--ink); border-bottom:1px solid var(--border); padding:20px 0; margin:24px 0; }
+  .hyp-label { font-family:var(--mono); font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted-light); margin-bottom:12px; }
+  .hyp-statement { font-size:15px; font-weight:500; color:var(--ink); line-height:1.75; margin-bottom:16px; }
+  .hyp-rows { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); }
+  .hyp-row { display:flex; align-items:stretch; background:var(--bg); }
+  .hyp-row-icon { font-family:var(--mono); font-size:11px; color:var(--muted-light); padding:14px 0; background:var(--bg-off); border-right:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; width:40px; }
+  .hyp-row-body { padding:13px 18px; font-size:13px; color:var(--ink-mid); line-height:1.8; }
+  .hyp-row-body strong { font-weight:500; color:var(--ink); }
+  .hyp-row.caution { background:#FDFAF0; }
+  .hyp-row.caution .hyp-row-icon { color:#9B7A2E; background:#FDF5DC; border-color:#EDD87A; }
+  .hyp-row.caution .hyp-row-body { color:#5A4A10; }
+
+
+  .case-result-bar { display:flex; align-items:stretch; border:1px solid var(--border); margin-top:20px; background:var(--border); gap:1px; }
+  .crb-item { flex:1; background:var(--bg); padding:14px 18px; }
+  .crb-divider { width:1px; background:var(--border); flex-shrink:0; display:none; }
+  .crb-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:5px; }
+  .crb-val { font-family:var(--mono); font-size:18px; font-weight:500; color:var(--ink); line-height:1; margin-bottom:4px; letter-spacing:-0.02em; }
+  .crb-val.up { color:var(--up); }
+  .crb-val.sm { font-size:13px; letter-spacing:0; }
+  .crb-desc { font-size:11px; color:var(--muted); }
+  .event-inline-meta { border:1px solid var(--border); border-top:none; padding:9px 18px; background:var(--bg-off); display:flex; flex-wrap:wrap; gap:16px; }
+  .eim-item { display:flex; align-items:center; gap:6px; }
+  .eim-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); }
+  .eim-value { font-size:11.5px; color:var(--ink-mid); }
+
+
+  .c1s-summary-title { font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:10px 16px; background:var(--bg-off); border-bottom:0.5px solid var(--border); }
+  .c1-summary { border:0.5px solid var(--border); margin-top:24px; }
+  .c1s-proj-row { display:flex; gap:1px; background:var(--border); border-bottom:0.5px solid var(--border); }
+  .c1s-proj { flex:1; background:var(--bg-off); padding:12px 16px; }
+  .c1s-proj.active { background:var(--bg-off); }
+  .c1s-period { font-family:var(--mono); font-size:9px; color:var(--muted-light); margin-bottom:4px; letter-spacing:.06em; }
+  .c1s-proj.active .c1s-period { color:var(--muted-light); }
+  .c1s-title { font-size:12px; font-weight:500; color:var(--ink-mid); }
+  .c1s-proj.active .c1s-title { color:var(--ink-mid); }
+  .c1s-role { font-size:11px; color:var(--muted); margin-top:3px; }
+  .c1s-proj.active .c1s-role { color:var(--muted); }
+  .c1s-detail { padding:14px 16px; border-bottom:0.5px solid var(--border); background:var(--bg); }
+  .c1s-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:10px; }
+  .c1s-list { display:flex; flex-direction:column; gap:6px; }
+  .c1s-item { font-size:12px; color:var(--ink-mid); line-height:1.65; display:flex; gap:8px; }
+  .c1s-item::before { content:'—'; color:var(--muted-light); flex-shrink:0; font-family:var(--mono); }
+  .c1s-result { display:flex; background:var(--bg); border-bottom:0.5px solid var(--border); }
+  .c1s-result-item { flex:1; padding:14px 16px; border-right:0.5px solid var(--border); }
+  .c1s-result-item:last-child { border-right:none; }
+  .c1s-rlabel { font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-light); margin-bottom:5px; }
+  .c1s-rval { font-family:var(--mono); font-size:20px; font-weight:500; line-height:1; margin-bottom:4px; letter-spacing:-0.02em; color:var(--ink); }
+  .c1s-rval.up { color:var(--up); }
+  .c1s-rval.sm { font-size:14px; letter-spacing:0; }
+  .c1s-rdesc { font-size:11px; color:var(--muted); }
+  .c1s-tool { padding:9px 16px; background:var(--bg-off); display:flex; align-items:center; gap:8px; }
+  .c1s-tlabel { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); }
+  .c1s-tval { font-size:11.5px; color:var(--muted); }
+
+
+  .freetrial-table-wrap { margin: 16px 0; }
+  .freetrial-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .freetrial-table th { font-family:var(--mono); font-size:9px; letter-spacing:.07em; text-transform:uppercase; text-align:left; padding:7px 12px; color:var(--muted); background:var(--bg-off); border-bottom:1.5px solid var(--ink); }
+  .freetrial-table th:last-child { width:40%; }
+  .freetrial-table td { padding:6px 12px; border-bottom:0.5px solid var(--border); color:var(--ink-mid); vertical-align:middle; }
+  .freetrial-table td:first-child { font-size:12px; color:var(--muted); }
+  .ft-pct { font-family:var(--mono); font-weight:500; text-align:right; width:60px; }
+  .ft-pct.low { color:var(--muted); }
+  .ft-pct.high { color:var(--up); }
+  .ft-bar-cell { padding:6px 12px 6px 8px; }
+  .ft-bar { height:6px; background:var(--border-strong); border-radius:0; }
+  .ft-bar-high { background:var(--up); }
+  .ft-divider-row td { padding:8px 12px; background:var(--bg-off); border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink); }
+  .ft-divider-label { font-family:var(--mono); font-size:9px; letter-spacing:.06em; color:var(--ink); font-weight:500; }
+
+
+  .ft-stat-row { display:flex; align-items:stretch; gap:1px; background:var(--border); border:0.5px solid var(--border); margin-bottom:14px; }
+  .ft-stat-item { flex:1; background:var(--bg); padding:14px 16px; }
+  .ft-stat-item.dark { background:#F0F9F4; border-left:3px solid var(--up); }
+  .ft-stat-label { font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted-light); margin-bottom:6px; }
+  .ft-stat-item.dark .ft-stat-label { color:var(--muted-light); }
+  .ft-stat-val { font-family:var(--mono); font-size:22px; font-weight:500; line-height:1; margin-bottom:4px; color:var(--ink); }
+  .ft-stat-val.low { color:var(--ink); }
+  .ft-stat-item.dark .ft-stat-val { color:var(--up); }
+  .ft-stat-desc { font-size:11px; color:var(--muted); }
+  .ft-stat-item.dark .ft-stat-desc { color:var(--muted); }
+  .ft-stat-arrow { display:flex; align-items:center; padding:0 12px; background:var(--bg); font-size:18px; color:var(--muted-light); }
+
+
+  .ba-screenshot-wrap { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+  .ba-screenshot-col { display:flex; flex-direction:column; }
+  .ba-screenshot-label-wrap { padding:7px 12px; font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
+  .ba-screenshot-label-wrap.before { background:#F7F7F7; color:#888; border:0.5px solid #E4E4E4; border-bottom:none; }
+  .ba-screenshot-label-wrap.after { background:#F0FDF4; color:#1A7A4A; border:0.5px solid #86EFAC; border-bottom:none; }
+  .ba-mock-screen { border:0.5px solid #E4E4E4; padding:14px; background:#fff; flex:1; }
+  .ba-mock-screen.after { border-color:#86EFAC; }
+  .ba-mock-title { font-size:13px; font-weight:700; color:var(--ink); text-align:center; margin-bottom:10px; }
+  .ba-mock-radio { font-size:10px; color:#888; border:0.5px solid #E4E4E4; padding:7px 10px; margin-bottom:8px; text-align:center; }
+  .ba-mock-radio-opts { display:block; margin-top:4px; }
+  .ba-mock-table { border:0.5px solid #C0C0C0; margin-bottom:10px; }
+  .ba-mock-row { display:flex; border-bottom:0.5px solid #E4E4E4; }
+  .ba-mock-row:last-child { border-bottom:none; }
+  .ba-mock-key { font-size:10px; color:#1A56DB; background:#EEF3FF; padding:5px 8px; min-width:70px; text-align:center; border-right:0.5px solid #C0C0C0; }
+  .ba-mock-val { font-size:10px; color:#333; padding:5px 8px; }
+  .ba-mock-blur { filter:blur(3px); user-select:none; }
+  .ba-mock-kakao { font-size:10px; color:#888; border:0.5px solid #E4E4E4; padding:10px; text-align:center; margin-bottom:10px; background:#FFFDE7; }
+  .ba-mock-btns { display:flex; gap:3px; }
+  .ba-mock-btn-col { display:flex; flex-direction:column; gap:3px; }
+  .ba-mock-btn { flex:1; padding:9px 6px; font-size:10px; font-weight:500; text-align:center; }
+  .ba-mock-btn.primary { background:#1a1a1a; color:#fff; }
+  .ba-mock-btn.secondary { background:#C0C0C0; color:#fff; }
+  .ba-mock-btn.accent { background:#1a1a1a; color:#fff; font-size:11px; }
+  .ba-note-block { border:0.5px solid var(--border); background:var(--bg-off); padding:12px 14px; margin:12px 0; display:flex; flex-direction:column; gap:7px; }
+  .ba-note-item { font-size:12.5px; color:var(--ink-mid); display:flex; align-items:baseline; gap:8px; }
+  .ba-tag { font-family:var(--mono); font-size:9px; padding:1px 5px; flex-shrink:0; }
+  .ba-tag.remove { background:#FEF2F2; color:#B83232; border:0.5px solid #FECACA; }
+  .ba-tag.add { background:#F0FDF4; color:#1A7A4A; border:0.5px solid #86EFAC; }
+
+
+  .result-block { border:1px solid var(--border); }
+  .result-block-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:8px 14px; background:var(--bg-off); border-bottom:1px solid var(--border); }
+  .result-flow { display:flex; align-items:center; gap:0; background:var(--border); }
+  .result-flow-item { flex:1; background:var(--bg); padding:16px 18px; }
+  .result-flow-item.highlight { background:var(--bg); border-left:2px solid var(--up); }
+  .result-flow-arrow { font-family:var(--mono); font-size:16px; color:var(--muted-light); padding:0 16px; background:var(--bg); flex-shrink:0; }
+  .result-flow-val { font-family:var(--mono); font-size:26px; font-weight:500; color:var(--ink); line-height:1; margin-bottom:6px; letter-spacing:-0.02em; }
+  .result-flow-item.highlight .result-flow-val { color:var(--up); }
+  .result-flow-desc { font-size:11.5px; color:var(--muted); line-height:1.6; }
+  .result-flow-note { font-size:12px; color:var(--muted); line-height:1.8; padding:12px 14px; background:var(--bg-off); border-top:1px solid var(--border); }
+
+  .result-sub-title { font-size:13px; font-weight:500; color:var(--ink); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+
+
+  .ev-block { border:0.5px solid var(--border); margin:16px 0; }
+  .ev-top { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; background:var(--bg-off); border-bottom:0.5px solid var(--border); }
+  .ev-top-title { font-size:13px; font-weight:600; color:var(--ink); }
+  .ev-top-date { font-family:var(--mono); font-size:10px; color:var(--muted-light); }
+  .ev-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-bottom:0.5px solid var(--border); }
+  .ev-cell { background:var(--bg); padding:12px 16px; }
+  .ev-cell-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:5px; }
+  .ev-cell-value { font-size:12.5px; color:var(--ink); line-height:1.6; }
+  .ev-mission { background:var(--bg); padding:12px 16px; border-bottom:0.5px solid var(--border); }
+  .ev-mission-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:8px; }
+  .ev-mission-row { display:flex; gap:10px; font-size:12.5px; color:var(--ink-mid); margin-bottom:5px; align-items:baseline; }
+  .ev-mission-row:last-child { margin-bottom:0; }
+  .ev-mission-key { font-weight:500; color:var(--ink); min-width:36px; flex-shrink:0; }
+  .ev-meta { padding:9px 16px; background:var(--bg-off); display:flex; flex-wrap:wrap; gap:16px; }
+  .ev-meta-item { display:flex; align-items:center; gap:6px; }
+  .ev-meta-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); }
+  .ev-meta-value { font-size:11.5px; color:var(--muted); }
+
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-logo">유효상 · Portfolio</span>
+  <ul class="nav-links">
+    <li><a href="#case1">1 · AARRR 설계 및 첫결제 이벤트</a></li>
+    <li><a href="#case2">2 · 가입 → 무료체험 퍼널 개선</a></li>
+  </ul>
+</nav>
+
+<div class="page-layout">
+  <div class="main-content">
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow fade-in">Growth Marketer &nbsp;·&nbsp; 지지옥션</p>
+  <h1 class="fade-in"><span class="accent-word">측정</span>하고, <span class="accent-word">가설</span>을 세우고,<br><span class="accent-word">실행</span>했습니다.</h1>
+  <div class="hero-divider fade-in"></div>
+  <div class="hero-info-row fade-in">
+    <div class="hero-info-item">
+      <span class="hero-info-label">회사</span>
+      <span class="hero-info-value">지지옥션 (대법원 경공매 1위 플랫폼)</span>
+    </div>
+    <div class="hero-info-item">
+      <span class="hero-info-label">역할</span>
+      <span class="hero-info-value">그로스 마케터 · PM</span>
+    </div>
+  </div>
+</section>
+
+<!-- TOC -->
+<section class="toc-section">
+  <div class="toc-card">
+    <p class="toc-card-label">Case 1</p>
+    <h3>AARRR 설계 및 첫결제 이벤트</h3>
+    <p>문제 정의를 위한 측정 가능한 구조를 만들고 이벤트를 기획하였습니다.</p>
+    <p class="toc-period">2025.04 – 2026.03</p>
+    <ul class="toc-chapters">
+      <li><a href="#c1-bg">01 측정 가능한 구조를 설계하고 기획하였습니다</a></li>
+      <li><a href="#c1-problem">02 문제 정의</a></li>
+      <li><a href="#c1-aarrr">03 AARRR 설계</a></li>
+      <li><a href="#c1-aha">04 아하모먼트 가설</a></li>
+      <li><a href="#c1-event">05 이벤트 설계</a></li>
+      <li><a href="#c1-result">06 결과</a></li>
+      <li><a href="#c1-limit">07 한계</a></li>
+      <li><a href="#c1-insight">08 인사이트</a></li>
+    </ul>
+  </div>
+  <div class="toc-card">
+    <p class="toc-card-label">Case 2</p>
+    <h3>가입 → 무료체험 퍼널 개선</h3>
+    <p>경로 단 두 곳에서 발견한 병목을 정상화하고 유저 데이터로 검증한 과정.</p>
+    <p class="toc-period">2025.07 – 09</p>
+    <ul class="toc-chapters">
+      <li><a href="#c2-bg">01 배경 — 유입 퍼널 점검</a></li>
+      <li><a href="#c2-problem">02 문제 발견</a></li>
+      <li><a href="#c2-solution">03 해결</a></li>
+      <li><a href="#c2-result">04 결과</a></li>
+      <li><a href="#c2-unexpected">05 예상과 달랐던 것</a></li>
+      <li><a href="#c2-limit">06 한계</a></li>
+      <li><a href="#c2-insight">07 인사이트</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CASE 1 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<article class="case" id="case1">
+  <header class="case-header">
+    <p class="case-eyebrow">Case 01 · 2025.04 – 2026.03 · AARRR 설계 및 첫결제 이벤트</p>
+    <h2>가입 → 무료체험 퍼널 개선 프로젝트</h2>
+    <div class="c1-summary">
+      <div class="c1s-proj-row">
+        <div class="c1s-proj">
+          <div class="c1s-period">25.04 – 25.07</div>
+          <div class="c1s-title">AARRR 설계 및 아하모먼트 가설 도출</div>
+          <div class="c1s-role">그로스 마케터 · 데이터 분석 · KPI 설계</div>
+        </div>
+        <div class="c1s-proj active">
+          <div class="c1s-period">25.12 – 26.02</div>
+          <div class="c1s-title">첫결제 전환율 개선 미션 이벤트 기획</div>
+          <div class="c1s-role">PM · 이벤트 기획 · 화면기획 · 데이터 분석</div>
+        </div>
+      </div>
+      <div class="c1s-detail">
+        <div class="c1s-label">주요 작업</div>
+        <div class="c1s-list">
+          <div class="c1s-item">서비스 최초 AARRR 설계 및 KPI 정의</div>
+          <div class="c1s-item">SQL로 가입 후 3일 이내 서비스별 결제 전환율 추출</div>
+          <div class="c1s-item">아하모먼트 가설 도출 — 상세페이지 5회+ 조회 + 관심물건 1건 등록</div>
+          <div class="c1s-item">당일결제비율 2년 하락 구간 정의 → 미션 이벤트 필요성 도출</div>
+          <div class="c1s-item">이벤트 플로우차트 · Figma 화면기획 · 개발 요구사항 정의서 작성</div>
+        </div>
+      </div>
+      <div class="c1s-result">
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">당일결제비율 반등</div>
+          <div class="c1s-rval up">4.1% → 8.7%</div>
+          <div class="c1s-rdesc">배포 전후 동기간 비교</div>
+        </div>
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">미션 완료자 전환율</div>
+          <div class="c1s-rval up">41.9%</div>
+          <div class="c1s-rdesc">31명 중 13명 결제</div>
+        </div>
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">문제 정의</div>
+          <div class="c1s-rval sm">16% → 4%</div>
+          <div class="c1s-rdesc">2년간 당일결제비율 하락 구간</div>
+        </div>
+      </div>
+      <div class="c1s-tool">
+        <span class="c1s-tlabel">도구</span>
+        <span class="c1s-tval">SQL · Amplitude · GTM · Excel · Figma · Notion · Power Query · Power Pivot</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 배경 -->
+  <div class="section" id="c1-bg">
+    <div class="section-title"><span class="section-num">01</span><h3>측정 가능한 구조를 설계하고 기획하였습니다 — AARRR 설계부터 시작한 이유</h3></div>
+    <p>지지옥션은 대법원 경공매 정보를 취합·가공해 유료로 제공하는 구독형 플랫폼입니다. 경매가 일반 대중에겐 생소하지만 쉽게 설명하자면 부동산이라는 큰 카테고리 중 작은 카테고리라고 보시면 됩니다. 여기서 <strong>지지옥션은 경공매 제공 플랫폼 중 1위 유료 플랫폼</strong>입니다. <span class="inline-stat">연 100만+</span> 고가 요금제 구조로 소수의 유저만으로도 <span class="inline-stat">월 평균 3.5억</span> 매출이 유지됩니다.</p>
+    <p>입사 당시 개발 우선순위는 CS 해결과 ASP → React 리팩토링에 집중되어 있었고, 그로스 실험을 위한 개발 리소스는 사실상 없었습니다.</p>
+    <div class="resource-block">
+      <div class="resource-header">
+        <span class="resource-title">입사 당시 개발 우선순위</span>
+        <span class="resource-badge">리소스 배분</span>
+      </div>
+      <div class="resource-rows">
+        <div class="resource-row">
+          <span class="resource-name">CS 해결</span>
+          <div class="bar-wrap"><div class="bar-fill bar-high" style="width:35%"></div></div>
+          <span class="resource-pct">~35%</span>
+        </div>
+        <div class="resource-row">
+          <span class="resource-name">ASP → React 리팩토링</span>
+          <div class="bar-wrap"><div class="bar-fill bar-high" style="width:60%"></div></div>
+          <span class="resource-pct">~60%</span>
+        </div>
+        <div class="resource-row resource-row-growth">
+          <span class="resource-name resource-name-dim">남은 리소스</span>
+          <div class="bar-wrap"><div class="bar-fill bar-low" style="width:5%"></div></div>
+          <span class="resource-pct resource-pct-dim">~5%</span>
+        </div>
+      </div>
+    </div>
+    <p>이 환경에서 리소스 제약 사항을 파악하고 그 안에서 움직일 수 있는 것을 찾아야 했고, <strong>측정 구조를 먼저 만드는 것을 시작하였습니다.</strong></p>
+  </div>
+
+<div class="section" id="c1-problem">
+    <div class="section-title"><span class="section-num">02</span><h3>문제 정의 — 데이터가 먼저 보여준 것</h3></div>
+
+    <p>입사 후 가장 먼저 한 것은 비즈니스 지표를 전반적으로 살펴보는 것이었습니다. 2023년부터의 월별 데이터를 정리하니 구조적인 문제가 보였습니다.</p>
+
+    <!-- ① 차트 -->
+    <div class="chart-container">
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:#1A56DB"></span>유효회원수</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#E05C2A"></span>생애 첫 결제자</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#2A9D5C"></span>재결제자</span>
+        <span class="legend-item"><span class="legend-rect" style="background:#CCCCCC;display:inline-block;width:12px;height:8px"></span>&nbsp;MRR</span>
+      </div>
+      <canvas id="metricsChart" height="240"></canvas>
+    </div>
+
+    <!-- ② 메트릭 카드 -->
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-value negative">−27%</div>
+        <div class="metric-label">유효회원수</div>
+        <div class="metric-sublabel">8,758 → 6,358명 · 2024.02→2025.07</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value negative">−42%</div>
+        <div class="metric-label">신규 첫 결제자</div>
+        <div class="metric-sublabel">월평균 545 → 314명 · 2024→2025.07</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value positive">+51%</div>
+        <div class="metric-label">재결제자</div>
+        <div class="metric-sublabel">월평균 1,233 → 1,860명 · 2023→2025.07</div>
+      </div>
+    </div>
+
+    <!-- ③ 핵심 패턴 -->
+    <div class="callout"><strong>재결제자는 늘고 있는데 신규 첫 결제자가 줄고 있습니다.</strong> 기존 유저가 이탈하는 게 아니라, 새로 들어온 유저가 결제로 전환되지 않는 구조적 문제였습니다. MRR이 유지되는 것은 재결제가 방어하고 있기 때문이고, 이 버퍼는 언제까지나 지속될 수 없습니다.</div>
+
+    <!-- ④ 인과 흐름 -->
+    <div class="causal-chain">
+      <div class="causal-item">
+        <div class="causal-label">신규 첫 결제자 감소</div>
+        <div class="causal-sub">월평균 545명 → 314명<br>2024년 대비 −42%</div>
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-item">
+        <div class="causal-label">유효회원수 감소</div>
+        <div class="causal-sub">8,758명 → 6,358명<br>3~6개월 후행 반영</div>
+      </div>
+      <div class="causal-arrow">→</div>
+      <div class="causal-item causal-risk">
+        <div class="causal-label">MRR 하락 예상</div>
+        <div class="causal-sub">재결제 모수 고갈 시<br>현 추세 기준 2027년 초</div>
+      </div>
+    </div>
+
+    <!-- ⑤ 결론 블록 -->
+    <div class="conclusion-block">
+      <div class="conclusion-row">
+        <div class="conclusion-icon">→</div>
+        <div class="conclusion-text">신규 첫 결제자가 줄고 있다는 건 데이터로 확인했지만, 어느 단계에서 막히는지는 알 수 없었습니다. 유입을 늘리거나 캠페인을 먼저 실행하는 건 막힌 곳을 모르는 상태에서 물을 더 붓는 것과 같다고 판단했습니다.</div>
+      </div>
+      <div class="conclusion-row">
+        <div class="conclusion-icon">→</div>
+        <div class="conclusion-text">문제를 진단하려면 유저 여정을 단계별로 볼 수 있는 구조가 먼저 필요했습니다. 당시 지지옥션에는 가입 이후 어느 단계에서 이탈이 일어나는지, 어떤 행동이 결제로 이어지는지를 연결해서 볼 수 있는 측정 체계가 없었습니다.</div>
+      </div>
+      <div class="conclusion-row conclusion-emphasis">
+        <div class="conclusion-icon">∴</div>
+        <div class="conclusion-text"><strong>측정 가능한 구조를 먼저 만들기로 했습니다. 그 출발점이 AARRR 설계였습니다.</strong></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 03 AARRR -->
+  <div class="section" id="c1-aarrr">
+    <div class="section-title"><span class="section-num">03</span><h3>AARRR 설계 — 지지옥션에 맞게 직접 정의하기</h3></div>
+
+    <p>일반적인 AARRR 정의를 그대로 쓰지 않았습니다. 지지옥션은 <strong>고가 구독 상품이라 첫 결제까지의 의사결정 과정이 길고</strong>, 무료체험이라는 중간 단계도 존재합니다. 이 구조에서 Activation을 단순히 "첫 핵심 행동"으로 정의하면 너무 모호해진다고 느꼈습니다. <strong>결제를 결심하게 만드는 행동이 구체적으로 무엇인지</strong>를 먼저 찾아야 했고, 그게 이 프레임워크 설계의 핵심 질문이었습니다.</p>
+
+    <p>A/B 테스트가 이상적이지만, 가입 시점 그룹 분리는 개발이 필요하고, 모수가 작은 서비스 특성상 그룹을 나누면 각 표본이 너무 작아져 결과 자체가 의미를 잃을 수 있다는 현실적인 제약도 있었습니다. 결과적으로 <strong>배포 전후 동기간 비교를 통해 이벤트 효과를 증명하려고 하였습니다.</strong></p>
+    <p>KPI는 당일결제비율로 설정했습니다. 무료체험은 24시간만 이용 가능하고, 결제를 결심하는 핵심 구간이 가입 당일이기 때문입니다. <strong>직전 3개월(2025.12 – 2026.02) 평균은 4~5% 수준</strong>이었고, 2024년 1월 16%에서 지속 하락하던 추세를 반등시키는 것이 목표였습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>단계</th><th>정의</th><th>핵심 지표</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Acquisition</strong></td><td>회원가입 완료</td><td>CAC, 가입 퍼널별 전환율</td></tr>
+          <tr><td><strong>Activation</strong></td><td>아하모먼트 도달 (가설 기반)</td><td>상세페이지 5회 + 관심물건 1건</td></tr>
+          <tr><td><strong>Retention</strong></td><td>요금제 재구독</td><td>재결제율, 구독 유지 기간</td></tr>
+          <tr><td><strong>Revenue</strong></td><td>요금제 첫 결제</td><td>신규 결제 전환율, 결제 소요일</td></tr>
+          <tr><td><strong>Referral</strong></td><td>측정 불가 (트래킹 미구축)</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Activation에 대해:</strong> 아하모먼트 가설은 추측이 아니라 <strong>DB 행동 로그를 기반으로 도출</strong>하려 했습니다. 가입 후 3일 이내 행동 로그와 결제 여부를 <strong>SQL로 조인해 서비스별 전환율을 추출</strong>했고, 그 결과에서 패턴을 발견했습니다. 다만 <strong>상관관계일 뿐 인과관계로 보기는 어렵고</strong>, 구체적인 분석 과정과 한계는 다음 섹션에서 다룹니다.
+    </div>
+
+    <div class="callout">
+      <strong>Retention에 대해:</strong> 지지옥션에선 첫 이용자에 한해 무료체험을 제공하는데, 신청 후 24시간만 이용 가능한 구조입니다. 실제 결제 전환 데이터를 보면 <strong>가입 후 3일 이내에 전환의 대부분이 집중</strong>되어 있고, 3일 이후부터는 추가 전환 효과가 급격히 낮아집니다.<br><br>
+      이 패턴에서, Retention의 역할이 재구독 유지보다 <strong>미결제 유저가 3일 안에 아하모먼트에 도달할 때까지 이탈하지 않고 머무는가</strong>를 관리하는 것에 가깝지 않을까 생각했습니다. 이후 설계한 첫결제 미션 이벤트에서 쿠폰 유효기간을 <strong>72시간으로 설정한 것도 이 판단에서 나온 결정</strong>이었습니다.<br><br>
+      다만 이 정의가 맞는지 확신은 없었고, 측정 가능한 지표로 구체화해서 검증하는 데까지는 이어지지 못했습니다. <strong>Retention은 이 케이스에서 가장 미완성으로 남아있는 부분입니다.</strong>
+    </div>
+
+    <div class="callout">
+      <strong>Referral에 대해:</strong> 추천을 통한 유입을 <strong>트래킹할 수 있는 구조 자체가 없었습니다.</strong> 측정할 수 없는 단계를 프레임워크에 포함시키는 건 의미가 없다고 판단해 이번 설계에서는 제외했습니다. 트래킹 구조가 먼저 갖춰져야 의미 있는 정의가 가능할 것 같습니다.
+    </div>
+
+  </div>
+
+<div class="section" id="c1-aha">
+    <div class="section-title"><span class="section-num">04</span><h3>아하모먼트 가설 — SQL로 데이터를 뜯었다</h3></div>
+
+    <p>AARRR 설계 중 Activation 단계에서 가장 중요한 질문은 하나였습니다.<br><br><strong>"우리 유저는 어떤 행동을 했을 때 결제를 결심하는가?"</strong></p>
+    <p>DB에 쌓인 유저 행동 로그를 SQL로 직접 분석했습니다. 가입 후 3일 이내 행동 로그와 결제 여부를 조인해 서비스 카테고리별 전환율을 추출했고, 전체 페이지를 분석한 뒤 전환율 패턴이 뚜렷한 상위 4개를 추렸습니다.</p>
+
+    <div class="aha-table-wrap">
+      <div class="aha-table-title">
+        <span>카테고리 × 방문 횟수별 결제 전환율</span>
+        <span class="aha-sub">가입 후 3일 이내 · 6회+ 기준 내림차순 · 2025.01–03 방문로그 기준</span>
+        <span class="aha-top4-badge">Top 4 전환 행동</span>
+      </div>
+      <table class="aha-hm-table">
+        <thead>
+          <tr><th>카테고리</th><th>1회</th><th>2~3회</th><th>4~5회</th><th>6회+</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>마이페이지<span class="aha-small-note">모수 소규모</span></td>
+            <td class="ah1"><div class="aha-cv"><span class="aha-n">595명</span><span class="aha-p">(22.9%)</span></div></td>
+            <td class="ah3"><div class="aha-cv"><span class="aha-n">348명</span><span class="aha-p">(48.3%)</span></div></td>
+            <td class="ah4"><div class="aha-cv"><span class="aha-n">88명</span><span class="aha-p">(70.5%)</span></div></td>
+            <td class="ah4"><div class="aha-cv"><span class="aha-n">77명</span><span class="aha-p">(90.9%)</span></div></td>
+          </tr>
+          <tr>
+            <td>관심물건 등록 횟수</td>
+            <td class="ah2"><div class="aha-cv"><span class="aha-n">166명</span><span class="aha-p">(34.3%)</span></div></td>
+            <td class="ah3"><div class="aha-cv"><span class="aha-n">96명</span><span class="aha-p">(43.8%)</span></div></td>
+            <td class="ah3"><div class="aha-cv"><span class="aha-n">47명</span><span class="aha-p">(51.1%)</span></div></td>
+            <td class="ah4"><div class="aha-cv"><span class="aha-n">101명</span><span class="aha-p">(71.3%)</span></div></td>
+          </tr>
+          <tr>
+            <td>조건검색<span class="aha-small-note">모수 소규모</span></td>
+            <td class="ah2"><div class="aha-cv"><span class="aha-n">63명</span><span class="aha-p">(28.6%)</span></div></td>
+            <td class="ah2"><div class="aha-cv"><span class="aha-n">45명</span><span class="aha-p">(33.3%)</span></div></td>
+            <td class="ah1"><div class="aha-cv"><span class="aha-n">15명</span><span class="aha-p">(20.0%)</span></div></td>
+            <td class="ah4"><div class="aha-cv"><span class="aha-n">38명</span><span class="aha-p">(60.5%)</span></div></td>
+          </tr>
+          <tr>
+            <td>상세페이지</td>
+            <td class="ah1"><div class="aha-cv"><span class="aha-n">1,109명</span><span class="aha-p">(14.3%)</span></div></td>
+            <td class="ah1"><div class="aha-cv"><span class="aha-n">976명</span><span class="aha-p">(18.3%)</span></div></td>
+            <td class="ah2"><div class="aha-cv"><span class="aha-n">455명</span><span class="aha-p">(25.9%)</span></div></td>
+            <td class="ah3"><div class="aha-cv"><span class="aha-n">1,090명</span><span class="aha-p">(40.0%)</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="aha-note">상세페이지: 경매 종합검색 + 예정/동산 상세·종합검색 + 공매/기관 상세 합산</p>
+    </div>
+
+    <div class="aha-interp">
+      <div class="aha-interp-header">아하모먼트를 관심물건 + 경매상세로 정의한 이유</div>
+      <div class="aha-interp-row">
+        <div class="aha-interp-cat">마이페이지·조건검색</div>
+        <div class="aha-interp-body">전환율은 높지만 <strong>모수가 38~88명</strong>으로 작고, 이미 결제 의향이 높은 유저가 자연스럽게 방문하는 페이지일 가능성이 높습니다. 행동을 유도해서 전환율을 높이기 어렵습니다.</div>
+      </div>
+      <div class="aha-interp-row">
+        <div class="aha-interp-cat">관심물건·경매상세</div>
+        <div class="aha-interp-body"><strong>충분한 모수(101명·1,090명)</strong>가 확보되고, 방문 횟수에 따라 전환율이 꾸준히 상승하는 패턴이 보입니다. 서비스 핵심 가치를 직접 경험하는 행위라 유도 가능성이 있다고 봤습니다.</div>
+      </div>
+    </div>
+
+    <p class="section-subtitle-bar">방문 횟수별 전환율 추이 — 주요 2개 카테고리</p>
+    <div class="aha-bar-section">
+      <div>
+        <div class="aha-bar-title">관심물건 등록 횟수</div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">1회</span><div class="aha-bar-track"><div class="aha-bar-fill alo" style="width:48%"><span class="aha-bar-text">166명(34.3%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">2~3회</span><div class="aha-bar-track"><div class="aha-bar-fill alo" style="width:61%"><span class="aha-bar-text">96명(43.8%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">4~5회</span><div class="aha-bar-track"><div class="aha-bar-fill amid" style="width:72%"><span class="aha-bar-text">47명(51.1%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">6회+</span><div class="aha-bar-track"><div class="aha-bar-fill ahi" style="width:100%"><span class="aha-bar-text">101명(71.3%)</span></div></div></div>
+        <p class="aha-bar-note">1회 대비 6회+ 약 2.1배</p>
+      </div>
+      <div>
+        <div class="aha-bar-title">상세페이지</div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">1회</span><div class="aha-bar-track"><div class="aha-bar-fill alo" style="width:36%"><span class="aha-bar-text">1,109명(14.3%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">2~3회</span><div class="aha-bar-track"><div class="aha-bar-fill alo" style="width:46%"><span class="aha-bar-text">976명(18.3%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">4~5회</span><div class="aha-bar-track"><div class="aha-bar-fill amid" style="width:65%"><span class="aha-bar-text">455명(25.9%)</span></div></div></div>
+        <div class="aha-bar-row"><span class="aha-bar-lbl">6회+</span><div class="aha-bar-track"><div class="aha-bar-fill ahi" style="width:100%"><span class="aha-bar-text">1,090명(40.0%)</span></div></div></div>
+        <p class="aha-bar-note">1회 대비 6회+ 약 2.8배</p>
+      </div>
+    </div>
+
+    <div class="hyp-block">
+      <p class="hyp-label">Hypothesis</p>
+      <p class="hyp-statement">가입 후 매물 상세페이지 5회 이상 조회 + 관심물건 1건 등록을 완료한 유저는<br>그렇지 않은 유저보다 결제 전환율이 유의미하게 높을 것이다.</p>
+      <div class="hyp-rows">
+        <div class="hyp-row">
+          <div class="hyp-row-icon">①</div>
+          <div class="hyp-row-body"><strong>데이터 패턴</strong> — 관심물건 등록 횟수와 상세페이지 방문 횟수가 늘수록 결제 전환율이 꾸준히 상승했습니다. 두 행동 모두 단순 탐색(종합검색, 14.3%)보다 높은 전환율을 보였고, 6회 이상 방문 시 전환율은 최대 71.3%까지 올랐습니다.</div>
+        </div>
+        <div class="hyp-row">
+          <div class="hyp-row-icon">②</div>
+          <div class="hyp-row-body"><strong>해석</strong> — 상세페이지 조회와 관심물건 등록은 서비스의 핵심 가치를 직접 경험하는 행위입니다. 단순히 검색하는 것과 달리, 특정 매물을 저장하고 반복적으로 확인하는 행동은 구매 의향이 구체화되고 있다는 신호로 볼 수 있습니다.</div>
+        </div>
+        <div class="hyp-row caution">
+          <div class="hyp-row-icon">△</div>
+          <div class="hyp-row-body"><strong>검증 필요</strong> — 이 패턴은 상관관계이며 인과관계가 아닙니다. 결제 의향이 원래 높은 유저가 이 행동을 자연스럽게 하는 것일 수 있어, 이 행동을 유도했을 때 전환율이 실제로 오르는지는 실험을 통해 검증이 필요합니다.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<div class="section" id="c1-event">
+    <div class="section-title">
+      <span class="section-num">05</span>
+      <h3>이벤트 설계 — 가설을 액션으로 연결하기</h3>
+    </div>
+    <div class="ev-block">
+      <div class="ev-top">
+        <span class="ev-top-title">첫결제 10% 미션 이벤트</span>
+        <span class="ev-top-date">2026.03.03 배포</span>
+      </div>
+      <div class="ev-grid">
+        <div class="ev-cell">
+          <div class="ev-cell-label">목적</div>
+          <div class="ev-cell-value" style="font-size:11.5px;letter-spacing:-0.02em">아하모먼트 행동 완료 시점에 인센티브 제공, 첫결제 전환 촉진</div>
+        </div>
+        <div class="ev-cell">
+          <div class="ev-cell-label">KPI</div>
+          <div class="ev-cell-value">당일결제비율 — 직전 3개월 평균 4~5% 대비 반등</div>
+        </div>
+      </div>
+      <div class="ev-mission">
+        <div class="ev-mission-label">이벤트 구성</div>
+        <div class="ev-mission-row"><span class="ev-mission-key">미션</span><span class="ev-mission-val">매물 상세페이지 5회 조회 + 관심물건 1건 등록</span></div>
+        <div class="ev-mission-row"><span class="ev-mission-key">보상</span><span class="ev-mission-val">미션 완료 시 첫결제 10% 쿠폰 지급</span></div>
+      </div>
+      <div class="ev-meta">
+        <div class="ev-meta-item"><span class="ev-meta-label">기간</span><span class="ev-meta-value">25.12 – 26.02</span></div>
+        <div class="ev-meta-item"><span class="ev-meta-label">역할</span><span class="ev-meta-value">PM · 이벤트 기획 · 화면기획 · 데이터 분석</span></div>
+        <div class="ev-meta-item"><span class="ev-meta-label">도구</span><span class="ev-meta-value">SQL · Amplitude · Figma · Notion</span></div>
+      </div>
+    </div>
+    <p>A/B 테스트가 이상적이지만, 가입 시점 그룹 분리는 개발이 필요하고, 모수가 작은 서비스 특성상 그룹을 나누면 각 표본이 너무 작아져 결과 자체가 의미를 잃을 수 있다는 현실적인 제약도 있었습니다. 결과적으로 <strong>배포 전후 동기간 비교를 통해 이벤트 효과를 증명하려고 하였습니다.</strong></p>
+    <p>KPI는 당일결제비율로 설정했습니다. 무료체험은 24시간만 이용 가능하고, 결제를 결심하는 핵심 구간이 가입 당일이기 때문입니다. <strong>직전 3개월(2025.12 – 2026.02) 평균은 4~5% 수준</strong>이었고, 2024년 1월 16%에서 지속 하락하던 추세를 반등시키는 것이 목표였습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>시기</th>
+            <th>당일결제비율</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2024년 1월</td><td>16%</td></tr>
+          <tr><td>2024년 6월</td><td>14%</td></tr>
+          <tr><td>2024년 12월</td><td>7%</td></tr>
+          <tr><td>2025년 내내</td><td>5~8%</td></tr>
+          <tr><td>2026년 2월</td><td><strong><span class="trend-down">4%</span></strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 06 결과 -->
+  <div class="section" id="c1-result">
+    <div class="section-title">
+      <span class="section-num">06</span>
+      <h3>결과</h3>
+    </div>
+
+    <p class="result-sub-title">① 당일결제비율 KPI</p>
+    <div class="result-block">
+      <div class="result-block-label">당일결제비율 변화</div>
+      <div class="result-flow">
+        <div class="result-flow-item">
+          <div class="result-flow-val">3.6%</div>
+          <div class="result-flow-desc">배포 전<br>2026.02 (3~20일)</div>
+        </div>
+        <div class="result-flow-arrow">→</div>
+        <div class="result-flow-item highlight">
+          <div class="result-flow-val">7.5%</div>
+          <div class="result-flow-desc">배포 후<br>2026.03 (3~20일)</div>
+        </div>
+      </div>
+    </div>
+    <div class="table-wrap" style="margin-top:10px;">
+      <table>
+        <thead>
+          <tr>
+            <th>구간</th>
+            <th>가입자</th>
+            <th>당일결제</th>
+            <th>당일결제비율</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026년 2월 (배포 전 · 3~20일)</td>
+            <td>841명</td>
+            <td>30명</td>
+            <td>3.6%</td>
+          </tr>
+          <tr>
+            <td>2026년 3월 (배포 후 · 3~20일)</td>
+            <td>888명</td>
+            <td>67명</td>
+            <td><strong><span class="trend-up">7.5%</span></strong></td>
+          </tr>
+          <tr style="background:var(--bg-off)">
+            <td>└ 쿠폰 발급자 제외</td>
+            <td>—</td>
+            <td>46명</td>
+            <td>5.2%</td>
+          </tr>
+          <tr style="background:var(--bg-off)">
+            <td>└ 쿠폰 발급자 포함</td>
+            <td>—</td>
+            <td>67명</td>
+            <td><strong><span class="trend-up">7.5%</span></strong> <span style="font-size:11px;color:var(--muted)">(+2.3%p 기여)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      배포 전후 당일결제비율이 <strong>3.6% → 7.5%로 반등</strong>했습니다. 다만 이 수치를 이벤트 단독 효과로 보기는 어렵습니다. 쿠폰 발급자를 제외하면 5.2%로, 이벤트의 직접 기여는 약 <strong>+2.3%p 수준</strong>입니다. 변인통제가 되지 않은 상태에서 비교한 것이고, 쿠폰 발급자 자체가 원래 결제 의향이 높은 유저였을 가능성도 있습니다. 2년간 하락하던 지표가 배포 시점과 맞물려 반등한 것은 사실이지만, 그 이상의 해석은 조심스럽습니다.
+    </div>
+
+    <p class="result-sub-title" style="margin-top:28px;">② 결제 전환율</p>
+    <div class="result-block">
+      <div class="result-block-label">미션 완료자 결제 전환율 — 전체 평균과 비교</div>
+      <div class="result-flow">
+        <div class="result-flow-item">
+          <div class="result-flow-val">5%</div>
+          <div class="result-flow-desc">전체 가입자 월 결제 전환율<br>2026년 2월 배포 전 기준</div>
+        </div>
+        <div class="result-flow-arrow">vs</div>
+        <div class="result-flow-item highlight">
+          <div class="result-flow-val">41.9%</div>
+          <div class="result-flow-desc">미션 완료자 결제 전환율<br>쿠폰 발급자 31명 중 13명</div>
+        </div>
+      </div>
+      <p class="result-flow-note">동일 분모 비교는 아닙니다. 전체 가입자 기준과 쿠폰 발급자 기준으로 분모가 다르지만, 아하모먼트 행동을 완료한 유저의 결제 전환율이 전체 평균 대비 약 8배 높게 나타났습니다. 이벤트가 결제 의향이 있는 유저의 행동을 촉진했다는 신호로 볼 수 있습니다.</p>
+    </div>
+    <div class="callout warning" style="margin-top:10px;">
+      미션 완료자의 높은 전환율은 "원래 결제 의향이 높은 유저가 미션도 하고 결제도 했다"는 반론이 가능합니다. 인과관계보다는 상관관계로 해석하는 것이 적절하다고 생각합니다.
+    </div>
+
+  </div>
+
+<div class="section" id="c1-limit">
+    <div class="section-title">
+      <span class="section-num">07</span>
+      <h3>한계</h3>
+    </div>
+    <ul class="item-list limit">
+      <li>
+        <p class="item-title">변인통제</p>
+        <p class="item-body">배포 전후 동기간 비교를 택했지만, 같은 기간이라도 외부 환경 변화나 다른 요인의 영향을 배제할 수 없다고 생각합니다. 이벤트 효과를 정확히 분리하려면 노출 그룹과 비노출 그룹을 나눠 비교하는 구조가 필요하다고 보며, 결과적으로 당일결제비율 반등이 이벤트 단독 효과라고 단정하기는 어렵다고 생각합니다.</p>
+      </li>
+      <li>
+        <p class="item-title">아하모먼트 가설 검증</p>
+        <p class="item-body">미션 완료자의 전환율이 높게 나온 것은 가설과 방향이 일치하지만, 인과관계의 증명은 아니라고 생각합니다. "이 행동을 유도했더니 전환율이 올랐다"는 것을 보여주려면 통제된 실험이 필요할 것 같습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">Retention 설계</p>
+        <p class="item-body">미결제 유저의 3일 윈도우를 Retention으로 정의하고, 72시간 쿠폰으로 구조적 장치를 만들었지만, 실제로 24시간 내 접속 빈도나 재방문 패턴이 결제 전환과 어떤 관계인지를 데이터로 확인하지 못했습니다. 다음엔 무료체험 기간 내 행동 로그를 코호트별로 추출해서, 접속 횟수 구간별 전환율을 먼저 검증하는 것부터 시작하고 싶습니다.</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 08 인사이트 -->
+  <div class="section" id="c1-insight">
+    <div class="section-title">
+      <span class="section-num">08</span>
+      <h3>인사이트</h3>
+    </div>
+    <ul class="item-list insight">
+      <li>
+        <p class="item-title">우선순위 설정 전략</p>
+        <p class="item-body">리소스가 제한적일수록 무엇을 먼저 할지의 선택이 중요하다고 느꼈습니다. 캠페인보다 AARRR 설계를 먼저 한 것은 "지금 어디가 막혀있는지 모르는 상태에서 유입을 늘리는 건 의미가 없다"는 판단이었습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">상관관계와 인과관계 구분 필요</p>
+        <p class="item-body">데이터에서 패턴을 발견하는 것과, 그것이 인과관계인지를 증명하는 것은 다르다고 생각합니다. 이 케이스에서 아하모먼트 가설은 관찰에서 나온 것이고, 완전한 검증은 이루어지지 않았습니다. 패턴을 발견했을 때 "이게 왜 그런가"를 계속 물어야 한다고 느꼈습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">측정 가능한 구조를 만드는 것</p>
+        <p class="item-body">완벽한 실험 환경이 갖춰지지 않은 상황에서도, 측정할 수 있는 지표를 먼저 정의하고 구조를 만드는 것이 다음 실험을 가능하게 한다고 생각합니다. 이번 케이스에서 AARRR을 설계하고 당일결제비율을 KPI로 잡은 것도, 완전한 검증보다 측정 가능한 것부터 시작한 선택이었습니다. 그 과정이 결과적으로 다음 실험의 토대가 됐다고 느꼈습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">퍼널 구조를 더욱 세분화할 필요가 있다고 생각합니다</p>
+        <p class="item-body">AARRR을 설계하면서 든 생각은, 하나의 프레임워크로 비즈니스 전체를 보는 건 너무 거칠 수 있다는 것이었습니다. 가입 퍼널, 무료체험 퍼널, 구독 유지 퍼널처럼 비즈니스에는 여러 크리티컬 패스가 존재하고, 각 패스마다 별도의 AARRR을 정의할 수 있지 않을까 생각합니다. 그렇게 보면 유효회원수나 매출 같은 후행 지표는 이 패스들의 합산 결과이고, 어느 패스가 막혔는지를 먼저 분리해서 봐야 정확한 진단이 가능하다고 느꼈습니다. 이 케이스에서 실제로 그 작업을 해보면서 더 확신이 생긴 관점입니다.</p>
+      </li>
+    </ul>
+  </div>
+</article>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- CASE 2 -->
+<!-- ═══════════════════════════════════════════════════ -->
+<article class="case" id="case2">
+  <header class="case-header">
+    <p class="case-eyebrow">Case 02 · 2025.07 – 2025.09 · 가입 → 무료체험 퍼널 개선</p>
+    <h2>가입 → 무료체험 퍼널 개선 프로젝트</h2>
+    <div class="c1-summary">
+      <div class="c1s-proj-row">
+        <div class="c1s-proj" style="flex:2">
+          <div class="c1s-period">25.07 – 25.09</div>
+          <div style="margin-top:6px;">
+            <div class="c1s-role" style="font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--muted-light);margin-bottom:4px;">담당 업무</div>
+            <div class="c1s-title" style="font-size:13px;font-weight:600;color:var(--ink)">PM <span style="font-weight:400;color:var(--muted);font-size:12px">(문제 정의 · 화면기획 · 데이터 분석 · QA)</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="c1s-detail">
+        <div class="c1s-label">주요 작업</div>
+        <div class="c1s-list">
+          <div class="c1s-item">직접 서비스 사용 중 무료체험 자동 신청 로직 오류 발견, DB 분석으로 문제 입증</div>
+          <div class="c1s-item">Amplitude 이벤트 택소노미 설계로 퍼널 전 구간 측정 가능한 구조 구축</div>
+          <div class="c1s-item">가입완료 페이지 버튼 클릭 데이터 분석으로 UX 개선 방향 도출</div>
+          <div class="c1s-item">가입 절차 3단계 → 2단계 축소 및 가입완료 페이지 UX 개선 배포</div>
+          <div class="c1s-item">Figma 화면기획 · 요구사항 정의서 작성 · 개발 팔로업 및 QA 직접 주도</div>
+        </div>
+      </div>
+      <div class="c1s-result">
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">가입완료 CVR</div>
+          <div class="c1s-rval up">+3.6%p</div>
+          <div class="c1s-rdesc">가입완료 전환율 개선</div>
+        </div>
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">가입 소요시간</div>
+          <div class="c1s-rval up">−45.7%</div>
+          <div class="c1s-rdesc">184초 → 100초</div>
+        </div>
+        <div class="c1s-result-item">
+          <div class="c1s-rlabel">발견</div>
+          <div class="c1s-rval sm">오류 → 정상화</div>
+          <div class="c1s-rdesc">무료체험 자동신청 로직 오류</div>
+        </div>
+      </div>
+      <div class="c1s-tool">
+        <span class="c1s-tlabel">도구</span>
+        <span class="c1s-tval">SQL · Amplitude · GTM · Figma · Notion · Excel · Power Query · Power Pivot</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 01 배경 -->
+  <div class="section" id="c2-bg">
+    <div class="section-title">
+      <span class="section-num">01</span>
+      <h3>배경 — 유입 퍼널 점검</h3>
+    </div>
+    <p>지지옥션의 유입 퍼널은 유입 → 가입 → (선택)무료체험 → 아하모먼트 발견 → 결제 순서로 이어집니다. 무료체험은 결제를 직접 만들어내는 것이 아닌 유저가 서비스의 핵심 가치를 경험할 수 있는 환경을 제공하는 것입니다.</p>
+    <p>무료체험 신청자가 실제로 이용하는지 비율로 확인하였을 때, 수치가 이상하게도 낮았습니다.</p>
+    <div class="freetrial-table-wrap">
+      <table class="freetrial-table">
+        <thead>
+          <tr><th>구분</th><th>이용률</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2024년 1월 <span style="font-size:11px;color:#BBBBBB">(최저)</span></td>
+            <td class="ft-pct low">53.8%</td>
+          </tr>
+          <tr>
+            <td>2024년 – 2025년 8월 평균 <span style="font-size:11px;color:#BBBBBB">(배포 전)</span></td>
+            <td class="ft-pct low">70.6%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="aha-note">무료체험 신청자 중 실제 이용 비율 · 수치가 이상하게 낮아 원인 분석 시작</p>
+    </div>
+  </div>
+
+  <!-- 02 문제 발견 -->
+  <div class="section" id="c2-problem">
+    <div class="section-title">
+      <span class="section-num">02</span>
+      <h3>문제 발견 — 경로가 두 곳에서 막혀있었습니다</h3>
+    </div>
+    <p><strong>발견 1 — 무료체험 신청 로직 오류</strong></p>
+    <p>데이터를 확인하고 의문점이 생겨 직접 가입해보다가 이상한 점을 발견했습니다. 무료체험을 신청한 적이 없는데 자동으로 신청이 완료되어 있었습니다. 담당하던 개발자는 퇴사하여 방치된 알 수 없는 로직에 따라 다르게 동작하고 있었습니다.</p>
+    <div class="callout">
+      이 구조의 진짜 문제는 "버그"가 아닙니다. 무료체험을 원하는 유저와 그냥 통과한 유저가 섞여서, <strong>"무료체험 신청 퍼널이 전체 퍼널 구조에 긍정적인 영향을 주는가"라는 질문 자체를 데이터로 검증할 수 없는 상태</strong>였습니다.
+    </div>
+    <hr class="divider">
+    <p><strong>발견 2 — 가입 절차 1단계에서 33% 이탈</strong></p>
+    <p>Amplitude 퍼널 분석 결과, 3단계 가입 구조에서 첫 번째 이동 구간에 약 33%가 이탈하고 있었습니다.</p>
+    <div class="funnel-steps">
+      <div class="funnel-step bottleneck">
+        <span class="step-icon">01</span>
+        <span class="step-label">약관동의</span>
+        <span class="step-note">여기서 33% 이탈 ↓</span>
+      </div>
+      <div class="funnel-step">
+        <span class="step-icon">02</span>
+        <span class="step-label">회원정보입력</span>
+        <span class="step-note"></span>
+      </div>
+      <div class="funnel-step">
+        <span class="step-icon">03</span>
+        <span class="step-label">가입완료</span>
+        <span class="step-note">최종 전환율 ~50%</span>
+      </div>
+    </div>
+    <p>약관 페이지라는 단계 자체가 UX 병목으로 작동하고 있다고 봤습니다.</p>
+  </div>
+
+  <!-- 03 해결 -->
+  <div class="section" id="c2-solution">
+    <div class="section-title">
+      <span class="section-num">03</span>
+      <h3>해결 — 두 가지를 동시에 정상화했다</h3>
+    </div>
+    <p>2025년 9월 9일 배포했습니다. 요구사항 정의부터 일정관리, 화면기획, 개발리뷰, QA까지 PM으로 직접 챙겼습니다.</p>
+    <div class="callout highlight">
+      <strong>변경 1 — 로직 수정</strong><br>
+      무료체험 신청 페이지를 새로 제작. 버튼을 직접 클릭해야만 신청되도록 변경.
+    </div>
+    <div class="callout highlight">
+      <strong>변경 2 — UX 개선</strong><br>
+      가입 절차를 3단계 → 2단계로 축소 (약관동의 페이지를 정보입력 페이지 안으로 통합)
+    </div>
+
+  </div>
+
+  <!-- 04 결과 -->
+  <div class="section" id="c2-result">
+    <div class="section-title">
+      <span class="section-num">04</span>
+      <h3>결과</h3>
+    </div>
+    <p><strong>가입 절차 개선</strong></p>
+    <p>A/B 테스트가 이상적이지만, 가입 시점 그룹 분리는 개발이 필요하고, 모수가 작은 서비스 특성상 그룹을 나누면 각 표본이 너무 작아져 결과 자체가 의미를 잃을 수 있다는 현실적인 제약도 있었습니다. 결과적으로 <strong>배포 전후 동기간 비교를 통해 이벤트 효과를 증명하려고 하였습니다.</strong></p>
+    <p>KPI는 당일결제비율로 설정했습니다. 무료체험은 24시간만 이용 가능하고, 결제를 결심하는 핵심 구간이 가입 당일이기 때문입니다. <strong>직전 3개월(2025.12 – 2026.02) 평균은 4~5% 수준</strong>이었고, 2024년 1월 16%에서 지속 하락하던 추세를 반등시키는 것이 목표였습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>지표</th>
+            <th>개선 전</th>
+            <th>개선 후</th>
+            <th>변화</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>가입완료 전환율</td>
+            <td>~50%</td>
+            <td><strong>53.4%</strong></td>
+            <td><span class="trend-up">+3.4%p</span></td>
+          </tr>
+          <tr>
+            <td>가입 소요시간 (중앙값)</td>
+            <td>184초 (3분 4초)</td>
+            <td><strong>100초 (1분 40초)</strong></td>
+            <td><span class="trend-up">-45.7%</span></td>
+          </tr>
+          <tr>
+            <td>가입 절차 단계</td>
+            <td>3단계</td>
+            <td><strong>2단계</strong></td>
+            <td>1단계 축소</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr class="divider">
+    <p><strong>무료체험 이용률 정상화 확인</strong></p>
+    <p>로직 오류 수정 후 무료체험 실제 이용률이 <strong>90%+로 정상화</strong>됐습니다. 이전의 53%~70% 수치는 개선된 것이 아니라, 잘못된 로직으로 인해 낮게 측정됐던 것입니다. 수정 후 수치가 정상 범위로 돌아온 것을 확인했습니다.</p>
+    <div class="freetrial-table-wrap">
+      <div class="ft-stat-row">
+        <div class="ft-stat-item">
+          <div class="ft-stat-label">개선 전 평균</div>
+          <div class="ft-stat-val" style="color:var(--ink)">70.6%</div>
+          <div class="ft-stat-desc">2024.01 – 2025.08</div>
+        </div>
+        <div class="ft-stat-arrow">→</div>
+        <div class="ft-stat-item dark">
+          <div class="ft-stat-label">정상화 후</div>
+          <div class="ft-stat-val">90%+</div>
+          <div class="ft-stat-desc">2025.09 이후</div>
+        </div>
+      </div>
+      <table class="freetrial-table">
+        <thead>
+          <tr><th>구분</th><th>이용률</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2024년 1월 <span style="font-size:11px;color:#BBBBBB">(최저)</span></td>
+            <td class="ft-pct low">53.8%</td>
+          </tr>
+          <tr>
+            <td>2024년 – 2025년 8월 평균 <span style="font-size:11px;color:#BBBBBB">(배포 전)</span></td>
+            <td class="ft-pct low">70.6%</td>
+          </tr>
+          <tr class="ft-divider-row">
+            <td colspan="2" class="ft-divider-label">↓ 퍼널 개선 배포 (2025.09)</td>
+          </tr>
+          <tr>
+            <td>2025년 9월 이후</td>
+            <td class="ft-pct high">90%+</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="aha-note">무료체험 신청자 중 실제 이용 비율 · 성과가 아닌 오류 수정 후 정상화</p>
+    </div>
+    <hr class="divider">
+
+    <p><strong>사후 확인 — 배포 후 버튼 클릭 데이터 (Amplitude)</strong></p>
+    <p>UX 판단으로 추가한 버튼이 유저 행동과 일치하고 있었습니다.</p>
+    <p>A/B 테스트가 이상적이지만, 가입 시점 그룹 분리는 개발이 필요하고, 모수가 작은 서비스 특성상 그룹을 나누면 각 표본이 너무 작아져 결과 자체가 의미를 잃을 수 있다는 현실적인 제약도 있었습니다. 결과적으로 <strong>배포 전후 동기간 비교를 통해 이벤트 효과를 증명하려고 하였습니다.</strong></p>
+    <p>KPI는 당일결제비율로 설정했습니다. 무료체험은 24시간만 이용 가능하고, 결제를 결심하는 핵심 구간이 가입 당일이기 때문입니다. <strong>직전 3개월(2025.12 – 2026.02) 평균은 4~5% 수준</strong>이었고, 2024년 1월 16%에서 지속 하락하던 추세를 반등시키는 것이 목표였습니다.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>버튼</th>
+            <th>클릭 비율</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1일 무료체험 바로가기</strong></td>
+            <td><strong><span class="trend-up">75.6%</span></strong></td>
+          </tr>
+          <tr>
+            <td>홈으로</td>
+            <td>13.6%</td>
+          </tr>
+          <tr>
+            <td>결제하기</td>
+            <td>10.7%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>가입완료 페이지 버튼 구성 변경:</p>
+    <div class="ba-screenshot-wrap">
+      <div class="ba-screenshot-col">
+        <div class="ba-screenshot-label-wrap before">Before — 개편 전</div>
+        <div class="ba-mock-screen">
+          <div class="ba-mock-title">회원가입이 완료되었습니다.</div>
+          <div class="ba-mock-radio">
+            <span>사이트 안내 등 상담사의 안내전화를 받으시겠습니까?</span>
+            <span class="ba-mock-radio-opts">○ 예 &nbsp; ● 아니오</span>
+          </div>
+          <div class="ba-mock-table">
+            <div class="ba-mock-row"><span class="ba-mock-key">인증여부</span><span class="ba-mock-val">휴대폰 인증</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">아이디</span><span class="ba-mock-val ba-mock-blur">swchoi01</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">성명</span><span class="ba-mock-val ba-mock-blur">홍길동</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">생년/성별</span><span class="ba-mock-val ba-mock-blur">1990 / 남</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">핸드폰</span><span class="ba-mock-val ba-mock-blur">010-xxxx-xxxx</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">거주지역</span><span class="ba-mock-val ba-mock-blur">서울 강남구</span></div>
+          </div>
+          <div class="ba-mock-kakao">지지옥션과 카카오톡 친구맺기 배너</div>
+          <div class="ba-mock-btns">
+            <div class="ba-mock-btn primary">결제하기</div>
+            <div class="ba-mock-btn secondary">홈으로</div>
+          </div>
+        </div>
+      </div>
+      <div class="ba-screenshot-col">
+        <div class="ba-screenshot-label-wrap after">After — 개편 후</div>
+        <div class="ba-mock-screen after">
+          <div class="ba-mock-title">회원가입이 완료되었습니다.</div>
+          <div class="ba-mock-table">
+            <div class="ba-mock-row"><span class="ba-mock-key">인증여부</span><span class="ba-mock-val">휴대폰 인증</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">아이디</span><span class="ba-mock-val ba-mock-blur">growth6</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">성명</span><span class="ba-mock-val ba-mock-blur">홍길동</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">생년/성별</span><span class="ba-mock-val ba-mock-blur">1990 / 남</span></div>
+            <div class="ba-mock-row"><span class="ba-mock-key">핸드폰</span><span class="ba-mock-val ba-mock-blur">010-xxxx-xxxx</span></div>
+          </div>
+          <div class="ba-mock-btn-col">
+            <div class="ba-mock-btn accent">1일 무료체험 바로가기</div>
+            <div class="ba-mock-btns">
+              <div class="ba-mock-btn primary">결제하기</div>
+              <div class="ba-mock-btn secondary">홈으로</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ba-note-block">
+      <div class="ba-note-item"><span class="ba-tag remove">제거</span>상담 수신 동의 · 거주지역 등 불필요 정보 및 UI 요소 정리</div>
+      <div class="ba-note-item"><span class="ba-tag add">추가</span>1일 무료체험 바로가기 버튼 — 가입 직후 자연스럽게 무료체험으로 유도</div>
+    </div>
+    <p>데이터를 보고 결정한 게 아니라 UX 관점에서 판단했습니다. 가입을 마친 유저가 자연스럽게 무료체험으로 넘어갈 수 있는 경로가 필요하다고 봤습니다.</p>
+  </div>
+
+  <!-- 05 예상과 달랐던 것 -->
+  <div class="section" id="c2-unexpected">
+    <div class="section-title">
+      <span class="section-num">05</span>
+      <h3>예상과 달랐던 것 — 결제를 결심한 집단과 무료체험을 통해 결제하는 집단의 성향은 달랐다</h3>
+    </div>
+    <p>배포 이후 데이터를 살펴보니 무료체험 신청률은 올랐는데 결제 전환율은 오히려 오르지 않았습니다. 되려 결제하는 유저 대부분은 무료체험 없이 결제하는 유저들이었습니다.</p>
+    <div class="callout">
+      법원 경매는 목적성이 강한 서비스라 이미 서비스를 인지하고 들어온 유저는 무료체험 없이 바로 결제하는 경향이 있었습니다. 무료체험은 <strong>아직 결제를 결심하지 못한 유저가 서비스의 핵심 가치를 경험해보는 경로</strong>에 가까웠습니다.
+    </div>
+    <p>그 유저들이 무료체험 이후 장기적으로 결제로 이어지는지는 이 프로젝트 이후의 질문으로 남았고, AARRR 분석에서 설계한 첫결제 미션 이벤트로 이어지는 배경이 됩니다.</p>
+  </div>
+
+  <!-- 06 한계 -->
+  <div class="section" id="c2-limit">
+    <div class="section-title">
+      <span class="section-num">06</span>
+      <h3>한계</h3>
+    </div>
+    <ul class="item-list limit">
+      <li>
+        <p class="item-title">분석보다 실행이 먼저였다</p>
+        <p class="item-body">"무료체험이 결제에 기여하는가"를 먼저 검증했어야 했는데, 로직 정상화의 필요성에 집중하다 보니 이 질문을 후순위로 뒀습니다. UX 개선(버튼 추가, 절차 축소)은 무료체험의 결제 기여도를 먼저 확인한 뒤에 진행했으면 더 좋았을 것 같습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">크리티컬패스를 복원했지만</p>
+        <p class="item-body">그 경로를 통해 아하모먼트를 발견한 유저가 실제로 결제로 전환되는지는 아직 확인이 안 됐습니다. 퍼널의 입구를 열었을 뿐이고, 그 안에서 무슨 일이 일어나는지는 첫결제 미션 이벤트에서 이어지는 과제입니다.</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 07 인사이트 -->
+  <div class="section" id="c2-insight">
+    <div class="section-title">
+      <span class="section-num">07</span>
+      <h3>인사이트</h3>
+    </div>
+    <ul class="item-list insight">
+      <li>
+        <p class="item-title">크리티컬패스가 작동하고 있는지 먼저 확인해야 한다</p>
+        <p class="item-body">전환율을 높이려 하기 전에, 유저가 그 경로에 제대로 도달하고 있는지를 먼저 봐야 한다는 걸 이 프로젝트에서 체감했습니다. 문제는 전환율이 낮은 게 아니라, 경로 자체가 제대로 작동하지 않고 있었던 거였습니다.</p>
+      </li>
+      <li>
+        <p class="item-title">정상화와 개선은 다르다</p>
+        <p class="item-body">숫자가 크게 움직여도 그게 무엇을 의미하는지 맥락 없이 성과로 포장하면 안 됩니다. 이 프로젝트의 본질은 개선이 아니라 정상화였고, 정상화된 이후의 데이터가 진짜 비교 기준점입니다.</p>
+      </li>
+      <li>
+        <p class="item-title">무료체험의 역할은 결제가 아니라 아하모먼트 제공이다</p>
+        <p class="item-body">무료체험이 결제를 직접 만들어내는 게 아니라, 서비스의 핵심 가치를 경험할 수 있는 환경을 제공하는 거라는 걸 데이터로 확인했습니다. 그 이후 결제로 이어지게 하는 건 별도의 그로스 전략이 필요한 문제입니다.</p>
+      </li>
+    </ul>
+  </div>
+</article>
+
+<!-- FOOTER -->
+<footer>
+  <span>유효상 · Growth Marketer</span>
+  <span>지지옥션 케이스스터디 · 2025–2026</span>
+</footer>
+  </div>
+  <aside class="sidebar-toc">
+    <div class="sidebar-toc-group">
+      <p class="sidebar-toc-group-label">1 · AARRR 설계 및 첫결제 이벤트</p>
+      <ul class="sidebar-toc-list">
+        <li><a href="#c1-bg">01 배경</a></li>
+        <li><a href="#c1-problem">02 문제 정의</a></li>
+        <li><a href="#c1-aarrr">03 AARRR 설계</a></li>
+        <li><a href="#c1-aha">04 아하모먼트</a></li>
+        <li><a href="#c1-event">05 이벤트 설계</a></li>
+        <li><a href="#c1-result">06 결과</a></li>
+        <li><a href="#c1-limit">07 한계</a></li>
+        <li><a href="#c1-insight">08 인사이트</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-toc-group">
+      <p class="sidebar-toc-group-label">2 · 가입 → 무료체험 퍼널 개선</p>
+      <ul class="sidebar-toc-list">
+        <li><a href="#c2-bg">01 배경</a></li>
+        <li><a href="#c2-problem">02 문제 발견</a></li>
+        <li><a href="#c2-solution">03 해결</a></li>
+        <li><a href="#c2-result">04 결과</a></li>
+        <li><a href="#c2-unexpected">05 예상과 달랐던 것</a></li>
+        <li><a href="#c2-limit">06 한계</a></li>
+        <li><a href="#c2-insight">07 인사이트</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section[id]');
+  const links = document.querySelectorAll('.sidebar-toc-list a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        links.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -70% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+(function() {
+  const labels = ['23.01','23.02','23.03','23.04','23.05','23.06','23.07','23.08','23.09','23.10','23.11','23.12','24.01','24.02','24.03','24.04','24.05','24.06','24.07','24.08','24.09','24.10','24.11','24.12','25.01','25.02','25.03','25.04','25.05','25.06','25.07'];
+  const members = [7640,7692,7749,7752,7678,7555,7391,7406,7423,7603,8084,8217,8452,8758,8716,8608,8496,8437,8343,8283,8099,8068,7879,7243,7033,6902,6791,6698,6508,6434,6358];
+  const newPay  = [481,437,474,466,411,385,375,407,488,592,820,685,855,820,708,601,602,522,489,470,404,461,337,266,327,339,351,332,284,299,268];
+  const rePay   = [1369,1211,1372,1202,1257,1220,1155,1232,1021,1196,1267,1298,1594,1473,1573,1481,1505,1414,1500,1454,1335,1382,1111,1094,1412,1725,1812,1936,1993,2016,2127];
+  const mrr     = [332,328,333,328,330,323,316,319,316,326,338,334,348,343,350,349,346,338,340,336,329,328,322,320,324,335,343,347,349,349,358];
+
+  const ctx = document.getElementById('metricsChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        { type:'bar', label:'MRR(백만원)', data:mrr, backgroundColor:'rgba(200,200,200,0.3)', borderWidth:0, yAxisID:'yR', order:10 },
+        { type:'line', label:'유효회원수', data:members, borderColor:'#1A56DB', borderWidth:2, pointRadius:0, pointHoverRadius:4, tension:0.3, yAxisID:'yL', order:1 },
+        { type:'line', label:'생애 첫 결제자', data:newPay, borderColor:'#E05C2A', borderWidth:1.5, pointRadius:0, pointHoverRadius:4, tension:0.3, yAxisID:'yL2', order:2 },
+        { type:'line', label:'재결제자', data:rePay, borderColor:'#2A9D5C', borderWidth:1.5, pointRadius:0, pointHoverRadius:4, tension:0.3, yAxisID:'yL2', order:3 }
+      ]
+    },
+    options: {
+      responsive:true,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'#0E0E0E', titleColor:'#BBBBBB', bodyColor:'#E8E8E8',
+          padding:10,
+          titleFont:{ family:'IBM Plex Mono', size:10 },
+          bodyFont:{ family:'IBM Plex Mono', size:11 },
+          callbacks:{ label: c => c.dataset.label==='MRR(백만원)' ? ` MRR: ${c.parsed.y}백만원` : ` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}명` }
+        }
+      },
+      scales:{
+        x:{ grid:{ color:'rgba(0,0,0,0.04)' }, ticks:{ font:{ family:'IBM Plex Mono', size:9 }, color:'#BBBBBB', maxRotation:0, callback:(v,i)=> i%6===0 ? labels[i] : '' }, border:{ color:'#E4E4E4' } },
+        yL:{ type:'linear', position:'left', min:0, max:10000, grid:{ color:'rgba(0,0,0,0.04)' }, ticks:{ font:{ family:'IBM Plex Mono', size:9 }, color:'#1A56DB', callback: v=> v===0?'':(v/1000).toFixed(0)+'k' }, border:{ color:'#E4E4E4' } },
+        yL2:{ type:'linear', position:'left', min:0, max:3000, display:false },
+        yR:{ type:'linear', position:'right', min:0, max:600, grid:{ drawOnChartArea:false }, ticks:{ font:{ family:'IBM Plex Mono', size:9 }, color:'#BBBBBB', callback: v=> v===0?'':v+'M' }, border:{ color:'#E4E4E4' } }
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
