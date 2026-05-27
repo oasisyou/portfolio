@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <!-- Google Tag Manager -->~
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-P3C6WPQM');</script>
-  <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>유효상 그로스 포트폴리오</title>
@@ -458,6 +451,37 @@
   .ba-tag.remove { background:#FEF2F2; color:#B83232; border:0.5px solid #FECACA; }
   .ba-tag.add { background:#F0FDF4; color:#1A7A4A; border:0.5px solid #86EFAC; }
 
+  .figma-work { border:0.5px solid var(--border); margin:22px 0; background:var(--bg); }
+  .figma-work-head { padding:18px 20px; border-bottom:0.5px solid var(--border); background:#F8FAFC; }
+  .figma-kicker { font-family:var(--mono); font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .figma-work-head h4 { font-size:15px; font-weight:700; color:var(--ink); margin-bottom:8px; letter-spacing:-0.01em; }
+  .figma-work-head p:last-child { font-size:12.5px; color:var(--ink-mid); line-height:1.8; margin-bottom:0; }
+  .figma-flow { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--border); border-bottom:0.5px solid var(--border); }
+  .figma-flow-step { background:var(--bg); padding:14px 16px; }
+  .figma-flow-num { font-family:var(--mono); font-size:9px; color:var(--muted-light); margin-bottom:6px; }
+  .figma-flow-title { font-size:12.5px; font-weight:600; color:var(--ink); margin-bottom:5px; }
+  .figma-flow-desc { font-size:11.5px; color:var(--muted); line-height:1.6; }
+  .figma-shot-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border-bottom:0.5px solid var(--border); }
+  .figma-shot { background:var(--bg); padding:16px; }
+  .figma-shot-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:10px; }
+  .figma-shot-label.after { color:var(--accent); }
+  .figma-mock { border:0.5px solid var(--border); background:#fff; padding:14px; min-height:180px; }
+  .figma-mock-title { font-size:12px; font-weight:700; color:var(--ink); text-align:center; margin-bottom:12px; }
+  .figma-mock-line { height:8px; background:#E8E8E8; margin-bottom:8px; }
+  .figma-mock-line.short { width:55%; }
+  .figma-mock-line.mid { width:75%; }
+  .figma-mock-field { border:0.5px solid var(--border); padding:8px 10px; font-size:10px; color:var(--muted); margin-bottom:6px; background:#FAFAFA; }
+  .figma-mock-button { margin-top:10px; padding:10px 12px; font-size:11px; font-weight:600; text-align:center; background:#1A1A1A; color:#fff; }
+  .figma-mock-button.secondary { background:#E8E8E8; color:var(--muted); }
+  .figma-output-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--border); }
+  .figma-output-item { background:var(--bg); padding:13px 16px; }
+  .figma-output-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-light); margin-bottom:6px; }
+  .figma-output-value { font-size:12.5px; color:var(--ink-mid); line-height:1.7; }
+
+  @media (max-width: 640px) {
+    .figma-flow, .figma-shot-grid, .figma-output-list { grid-template-columns:1fr; }
+  }
+
 
   .result-block { border:1px solid var(--border); }
   .result-block-label { font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:8px 14px; background:var(--bg-off); border-bottom:1px solid var(--border); }
@@ -543,10 +567,6 @@
 </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3C6WPQM"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 <nav>
   <span class="nav-logo">유효상 · Portfolio</span>
   <ul class="nav-links">
@@ -642,7 +662,7 @@
       <div class="c1s-result">
         <div class="c1s-result-item">
           <div class="c1s-rlabel">당일결제비율 반등</div>
-          <div class="c1s-rval up">3.6% → 7.5%</div>
+          <div class="c1s-rval up">4.1% → 8.7%</div>
           <div class="c1s-rdesc">배포 전후 동기간 비교</div>
         </div>
         <div class="c1s-result-item">
@@ -652,7 +672,7 @@
         </div>
         <div class="c1s-result-item">
           <div class="c1s-rlabel">문제 정의</div>
-          <div class="c1s-rval sm">16% → 4%</div>
+          <div class="c1s-rval">16% → 4%</div>
           <div class="c1s-rdesc">2년간 당일결제비율 하락 구간</div>
         </div>
       </div>
@@ -970,12 +990,12 @@
       <div class="result-block-label">당일결제비율 변화</div>
       <div class="result-flow">
         <div class="result-flow-item">
-          <div class="result-flow-val">3.6%</div>
+          <div class="result-flow-val">4.1%</div>
           <div class="result-flow-desc">배포 전<br>2026.02 (3~20일)</div>
         </div>
         <div class="result-flow-arrow">→</div>
         <div class="result-flow-item highlight">
-          <div class="result-flow-val">7.5%</div>
+          <div class="result-flow-val">8.7%</div>
           <div class="result-flow-desc">배포 후<br>2026.03 (3~20일)</div>
         </div>
       </div>
@@ -994,14 +1014,14 @@
           <tr>
             <td>2026년 2월 (배포 전 · 3~20일)</td>
             <td>841명</td>
-            <td>30명</td>
-            <td>3.6%</td>
+            <td>35명</td>
+            <td>4.1%</td>
           </tr>
           <tr>
             <td>2026년 3월 (배포 후 · 3~20일)</td>
             <td>888명</td>
-            <td>67명</td>
-            <td><strong><span class="trend-up">7.5%</span></strong></td>
+            <td>77명</td>
+            <td><strong><span class="trend-up">8.7%</span></strong></td>
           </tr>
           <tr style="background:var(--bg-off)">
             <td>└ 쿠폰 발급자 제외</td>
@@ -1012,14 +1032,14 @@
           <tr style="background:var(--bg-off)">
             <td>└ 쿠폰 발급자 포함</td>
             <td>—</td>
-            <td>67명</td>
-            <td><strong><span class="trend-up">7.5%</span></strong> <span style="font-size:11px;color:var(--muted)">(+2.3%p 기여)</span></td>
+            <td>77명</td>
+            <td><strong><span class="trend-up">8.7%</span></strong> <span style="font-size:11px;color:var(--muted)">(+3.5%p 기여)</span></td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="callout warning">
-      배포 전후 당일결제비율이 <strong>3.6% → 7.5%로 반등</strong>했습니다. 다만 이 수치를 이벤트 단독 효과로 보기는 어렵습니다. 쿠폰 발급자를 제외하면 5.2%로, 이벤트의 직접 기여는 약 <strong>+2.3%p 수준</strong>입니다. 변인통제가 되지 않은 상태에서 비교한 것이고, 쿠폰 발급자 자체가 원래 결제 의향이 높은 유저였을 가능성도 있습니다. 2년간 하락하던 지표가 배포 시점과 맞물려 반등한 것은 사실이지만, 그 이상의 해석은 조심스럽습니다.
+      배포 전후 당일결제비율이 <strong>4.1% → 8.7%로 반등</strong>했습니다. 다만 이 수치를 이벤트 단독 효과로 보기는 어렵습니다. 쿠폰 발급자를 제외하면 5.2%로, 이벤트의 직접 기여는 약 <strong>+3.5%p 수준</strong>입니다. 변인통제가 되지 않은 상태에서 비교한 것이고, 쿠폰 발급자 자체가 원래 결제 의향이 높은 유저였을 가능성도 있습니다. 2년간 하락하던 지표가 배포 시점과 맞물려 반등한 것은 사실이지만, 그 이상의 해석은 조심스럽습니다.
     </div>
 
     <p class="result-sub-title" style="margin-top:28px;">② 결제 전환율</p>
@@ -1219,6 +1239,74 @@
     <div class="callout highlight">
       <strong>변경 2 — UX 개선</strong><br>
       가입 절차를 3단계 → 2단계로 축소 (약관동의 페이지를 정보입력 페이지 안으로 통합)
+    </div>
+
+    <div class="figma-work">
+      <div class="figma-work-head">
+        <p class="figma-kicker">Figma screen planning · sample data</p>
+        <h4>화면기획 / Figma 설계 — 가입완료 후 무료체험 진입 경로</h4>
+        <p>문제 발견 이후, 유저가 가입을 마친 순간 바로 다음 행동을 이해하도록 가입완료 페이지와 무료체험 신청 플로우를 Figma로 재구성했습니다. 아래 내용은 구조 확인용 가데이터입니다.</p>
+      </div>
+      <div class="figma-flow">
+        <div class="figma-flow-step">
+          <div class="figma-flow-num">01</div>
+          <div class="figma-flow-title">문제 정의</div>
+          <div class="figma-flow-desc">가입 후 다음 행동이 흩어져 무료체험 진입 의도가 약해지는 구간을 정의</div>
+        </div>
+        <div class="figma-flow-step">
+          <div class="figma-flow-num">02</div>
+          <div class="figma-flow-title">화면 구조화</div>
+          <div class="figma-flow-desc">가입완료 화면의 CTA 우선순위를 무료체험 진입 중심으로 재배치</div>
+        </div>
+        <div class="figma-flow-step">
+          <div class="figma-flow-num">03</div>
+          <div class="figma-flow-title">개발 전달</div>
+          <div class="figma-flow-desc">상태값, 버튼 조건, 예외 케이스를 요구사항 정의서로 정리</div>
+        </div>
+        <div class="figma-flow-step">
+          <div class="figma-flow-num">04</div>
+          <div class="figma-flow-title">QA 기준</div>
+          <div class="figma-flow-desc">클릭 로그와 신청 완료 이벤트가 남는지 배포 전후로 확인</div>
+        </div>
+      </div>
+      <div class="figma-shot-grid">
+        <div class="figma-shot">
+          <div class="figma-shot-label">Before wireframe</div>
+          <div class="figma-mock">
+            <div class="figma-mock-title">회원가입이 완료되었습니다.</div>
+            <div class="figma-mock-line"></div>
+            <div class="figma-mock-line mid"></div>
+            <div class="figma-mock-field">사이트 안내 수신 동의</div>
+            <div class="figma-mock-button secondary">홈으로</div>
+            <div class="figma-mock-button secondary">결제하기</div>
+          </div>
+        </div>
+        <div class="figma-shot">
+          <div class="figma-shot-label after">After wireframe</div>
+          <div class="figma-mock">
+            <div class="figma-mock-title">회원가입이 완료되었습니다.</div>
+            <div class="figma-mock-line short"></div>
+            <div class="figma-mock-field">무료체험 대상 여부 확인</div>
+            <div class="figma-mock-field">필수 정보 자동 입력 상태</div>
+            <div class="figma-mock-button">1일 무료체험 바로가기</div>
+            <div class="figma-mock-button secondary">홈으로</div>
+          </div>
+        </div>
+      </div>
+      <div class="figma-output-list">
+        <div class="figma-output-item">
+          <div class="figma-output-label">Deliverable</div>
+          <div class="figma-output-value">Figma 화면 6종, 전환 플로우차트, 상태별 CTA 문구</div>
+        </div>
+        <div class="figma-output-item">
+          <div class="figma-output-label">Handoff</div>
+          <div class="figma-output-value">개발 요구사항 12개, QA 체크리스트 9개, Amplitude 이벤트명 정리</div>
+        </div>
+        <div class="figma-output-item">
+          <div class="figma-output-label">Intent</div>
+          <div class="figma-output-value">가입 직후 이탈을 줄이고 무료체험 신청 행동을 하나의 경로로 집중</div>
+        </div>
+      </div>
     </div>
 
   </div>
