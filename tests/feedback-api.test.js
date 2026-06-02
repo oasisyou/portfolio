@@ -68,3 +68,33 @@ test("buildNotionPayload maps feedback to Notion database properties", () => {
   );
   assert.equal(payload.properties["제출 시간"].date.start, "2026-06-02T09:00:00.000Z");
 });
+
+test("buildNotionPayload uses the actual Notion title property name from schema", () => {
+  const payload = buildNotionPayload(
+    "f3ea43c3334546ad95085ac5d07e4d57",
+    {
+      categories: ["문제 정의"],
+      sentiment: "좋았어요",
+      score: 4,
+      comment: "제목 컬럼명이 Name이어도 저장돼야 합니다.",
+      pageUrl: "https://oasisyou.github.io/portfolio/",
+      submittedAt: "2026-06-02T09:00:00.000Z",
+    },
+    {
+      Name: { type: "title" },
+      카테고리: { type: "multi_select" },
+      느낌: { type: "select" },
+      점수: { type: "number" },
+      의견: { type: "rich_text" },
+      "페이지 URL": { type: "url" },
+      "제출 시간": { type: "date" },
+    }
+  );
+
+  assert.ok(payload.properties.Name);
+  assert.equal(payload.properties["제목"], undefined);
+  assert.equal(
+    payload.properties.Name.title[0].text.content,
+    "좋았어요 · 문제 정의"
+  );
+});

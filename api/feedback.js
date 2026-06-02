@@ -65,34 +65,73 @@ function validateFeedbackPayload(input) {
   };
 }
 
-function buildNotionPayload(databaseId, feedback) {
+function findPropertyName(schemaProperties, aliases, expectedType) {
+  if (!schemaProperties) return aliases[0];
+
+  for (const alias of aliases) {
+    if (schemaProperties[alias] && (!expectedType || schemaProperties[alias].type === expectedType)) {
+      return alias;
+    }
+  }
+
+  const fallback = Object.entries(schemaProperties).find(([, property]) => property.type === expectedType);
+  return fallback ? fallback[0] : "";
+}
+
+function addPropertyIfFound(properties, name, value) {
+  if (!name) return;
+  properties[name] = value;
+}
+
+function buildNotionPayload(databaseId, feedback, schemaProperties) {
   const title = `${feedback.sentiment} · ${feedback.categories.join(", ")}`;
+  const properties = {};
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["제목", "Name", "Title"], "title"),
+    { title: [{ text: { content: title.slice(0, 120) } }] }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["카테고리", "Categories", "Category"], "multi_select"),
+    { multi_select: feedback.categories.map((name) => ({ name })) }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["느낌", "Sentiment", "Reaction"], "select"),
+    { select: { name: feedback.sentiment } }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["점수", "Score", "Rating"], "number"),
+    { number: feedback.score }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["의견", "Comment", "Feedback"], "rich_text"),
+    { rich_text: [{ text: { content: feedback.comment } }] }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["페이지 URL", "Page URL", "URL"], "url"),
+    { url: feedback.pageUrl || null }
+  );
+
+  addPropertyIfFound(
+    properties,
+    findPropertyName(schemaProperties, ["제출 시간", "Submitted At", "Submitted"], "date"),
+    { date: { start: feedback.submittedAt } }
+  );
 
   return {
     parent: { database_id: databaseId },
-    properties: {
-      제목: {
-        title: [{ text: { content: title.slice(0, 120) } }],
-      },
-      카테고리: {
-        multi_select: feedback.categories.map((name) => ({ name })),
-      },
-      느낌: {
-        select: { name: feedback.sentiment },
-      },
-      점수: {
-        number: feedback.score,
-      },
-      의견: {
-        rich_text: [{ text: { content: feedback.comment } }],
-      },
-      "페이지 URL": {
-        url: feedback.pageUrl || null,
-      },
-      "제출 시간": {
-        date: { start: feedback.submittedAt },
-      },
-    },
+    properties,
   };
 }
 
@@ -168,6 +207,26 @@ async function handler(req, res) {
     return;
   }
 
+  const databaseResponse = await fetch(`https://api.notion.com/v1/databases/${databaseId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Notion-Version": "2022-06-28",
+    },
+  });
+
+  if (!databaseResponse.ok) {
+    const detail = await databaseResponse.text();
+    console.error("Notion database lookup failed", databaseResponse.status, detail);
+    res.status(502).json({
+      ok: false,
+      error: "Notion 데이터베이스를 확인하지 못했습니다. DB ID, 토큰, Integration 연결을 확인해주세요.",
+    });
+    return;
+  }
+
+  const database = await databaseResponse.json();
+
   const notionResponse = await fetch("https://api.notion.com/v1/pages", {
     method: "POST",
     headers: {
@@ -175,7 +234,7 @@ async function handler(req, res) {
       "Content-Type": "application/json",
       "Notion-Version": "2022-06-28",
     },
-    body: JSON.stringify(buildNotionPayload(databaseId, feedback)),
+    body: JSON.stringify(buildNotionPayload(databaseId, feedback, database.properties)),
   });
 
   if (!notionResponse.ok) {
