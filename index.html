@@ -571,6 +571,193 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .main-content { margin-left: 0 !important; }
 }
 
+/* PORTFOLIO FEEDBACK */
+.portfolio-feedback-toggle {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 360;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 12px 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18);
+  cursor: pointer;
+}
+.portfolio-feedback-panel {
+  position: fixed;
+  right: 32px;
+  top: 132px;
+  z-index: 340;
+  width: min(372px, calc(100vw - 40px));
+  background: rgba(255,255,255,.98);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 24px 68px rgba(0,0,0,.18);
+  overflow: hidden;
+  display: none;
+}
+body.portfolio-feedback-open .portfolio-feedback-panel {
+  display: block;
+}
+.portfolio-feedback-head {
+  padding: 16px 18px 13px;
+  border-bottom: 1px solid var(--border);
+}
+.portfolio-feedback-kicker {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.portfolio-feedback-head h3 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.portfolio-feedback-head p {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0;
+}
+.portfolio-feedback-body {
+  padding: 16px 18px 18px;
+}
+.portfolio-feedback-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink-mid);
+  margin-bottom: 9px;
+}
+.portfolio-feedback-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.portfolio-feedback-chip,
+.portfolio-feedback-sentiment,
+.portfolio-feedback-score button {
+  border: 1px solid var(--border);
+  background: var(--bg-off);
+  color: var(--ink-mid);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.portfolio-feedback-chip {
+  padding: 5px 9px;
+  font-family: var(--sans);
+  font-size: 11px;
+}
+.portfolio-feedback-chip.is-active {
+  background: #EDF2FF;
+  color: var(--accent);
+  border-color: #CBD7FF;
+}
+.portfolio-feedback-sentiment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.portfolio-feedback-sentiment {
+  min-height: 36px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+}
+.portfolio-feedback-score {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.portfolio-feedback-score button {
+  height: 34px;
+  font-family: var(--mono);
+  font-size: 12px;
+  border-radius: 6px;
+}
+.portfolio-feedback-sentiment.is-active,
+.portfolio-feedback-score button.is-active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.portfolio-feedback-textarea {
+  width: 100%;
+  min-height: 78px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  color: var(--ink-mid);
+  background: #fff;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  resize: vertical;
+}
+.portfolio-feedback-honeypot {
+  display: none;
+}
+.portfolio-feedback-status {
+  min-height: 18px;
+  font-size: 11.5px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.portfolio-feedback-status.is-error {
+  color: var(--down);
+}
+.portfolio-feedback-submit {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 12px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.portfolio-feedback-submit:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+@media (max-width: 900px) {
+  .portfolio-feedback-panel {
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 72px;
+    width: auto;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+  }
+  .portfolio-feedback-toggle {
+    right: 16px;
+    bottom: 16px;
+    padding: 11px 14px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -578,6 +765,48 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3C6WPQM"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<aside class="portfolio-feedback-panel" aria-label="포트폴리오 피드백">
+  <div class="portfolio-feedback-head">
+    <div class="portfolio-feedback-kicker">portfolio feedback</div>
+    <h3>포트폴리오 피드백 남기기</h3>
+    <p>부담 없이 큰 항목부터 선택하고, 짧게 의견을 남겨주세요.</p>
+  </div>
+  <form class="portfolio-feedback-body" data-feedback-form data-feedback-endpoint="https://portfolio-feedback-api.vercel.app/api/feedback">
+    <div class="portfolio-feedback-label">무엇에 대한 피드백인가요?</div>
+    <div class="portfolio-feedback-chips" data-feedback-categories>
+      <button class="portfolio-feedback-chip is-active" type="button">문제 정의</button>
+      <button class="portfolio-feedback-chip" type="button">해결 방식</button>
+      <button class="portfolio-feedback-chip" type="button">데이터 근거</button>
+      <button class="portfolio-feedback-chip" type="button">구성/흐름</button>
+      <button class="portfolio-feedback-chip" type="button">디자인/가독성</button>
+      <button class="portfolio-feedback-chip" type="button">역량 전달</button>
+      <button class="portfolio-feedback-chip" type="button">기타</button>
+    </div>
+
+    <div class="portfolio-feedback-label">어떤 느낌에 가까웠나요?</div>
+    <div class="portfolio-feedback-sentiment-grid" data-feedback-single>
+      <button class="portfolio-feedback-sentiment is-active" type="button">좋았어요</button>
+      <button class="portfolio-feedback-sentiment" type="button">아쉬웠어요</button>
+      <button class="portfolio-feedback-sentiment" type="button">더 궁금해요</button>
+    </div>
+
+    <div class="portfolio-feedback-label">점수</div>
+    <div class="portfolio-feedback-score" data-feedback-single>
+      <button type="button">1</button>
+      <button type="button">2</button>
+      <button type="button">3</button>
+      <button type="button" class="is-active">4</button>
+      <button type="button">5</button>
+    </div>
+
+    <label class="portfolio-feedback-label" for="portfolio-feedback-comment">의견</label>
+    <textarea class="portfolio-feedback-textarea" id="portfolio-feedback-comment" name="comment" maxlength="1200" placeholder="예: 문제를 데이터로 정의한 점은 좋았고, Case 2의 결과 해석은 조금 더 짧게 요약되면 더 잘 읽힐 것 같습니다."></textarea>
+    <input class="portfolio-feedback-honeypot" type="text" name="website" tabindex="-1" autocomplete="off">
+    <div class="portfolio-feedback-status" data-feedback-status aria-live="polite"></div>
+    <button class="portfolio-feedback-submit" type="submit">피드백 보내기</button>
+  </form>
+</aside>
+<button class="portfolio-feedback-toggle" type="button" aria-expanded="false">피드백하기</button>
 <nav>
   <span class="nav-logo">유효상 · Portfolio</span>
   <ul class="nav-links">
@@ -1637,6 +1866,144 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         yL2:{ type:'linear', position:'left', min:0, max:3000, display:false },
         yR:{ type:'linear', position:'right', min:0, max:600, grid:{ drawOnChartArea:false }, ticks:{ font:{ family:'IBM Plex Mono', size:9 }, color:'#BBBBBB', callback: v=> v===0?'':v+'M' }, border:{ color:'#E4E4E4' } }
       }
+    }
+  });
+})();
+</script>
+
+<script>
+(function () {
+  const body = document.body;
+  const toggle = document.querySelector(".portfolio-feedback-toggle");
+  const form = document.querySelector("[data-feedback-form]");
+  if (!toggle || !form) return;
+
+  const status = form.querySelector("[data-feedback-status]");
+  const submit = form.querySelector(".portfolio-feedback-submit");
+
+  function setOpen(next) {
+    body.classList.toggle("portfolio-feedback-open", next);
+    toggle.setAttribute("aria-expanded", String(next));
+    toggle.textContent = next ? "피드백 닫기" : "피드백하기";
+    if (next && window.dataLayer) {
+      window.dataLayer.push({ event: "feedback_panel_open" });
+    }
+  }
+
+  function setStatus(message, isError) {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.toggle("is-error", Boolean(isError));
+  }
+
+  function activeText(selector) {
+    const active = form.querySelector(selector + " .is-active");
+    return active ? active.textContent.trim() : "";
+  }
+
+  function selectedCategories() {
+    return Array.from(form.querySelectorAll("[data-feedback-categories] .is-active"))
+      .map((button) => button.textContent.trim());
+  }
+
+  toggle.addEventListener("click", function () {
+    setOpen(!body.classList.contains("portfolio-feedback-open"));
+  });
+
+  form.querySelector("[data-feedback-categories]").addEventListener("click", function (event) {
+    const button = event.target.closest("button");
+    if (!button) return;
+    button.classList.toggle("is-active");
+    setStatus("", false);
+  });
+
+  form.querySelectorAll("[data-feedback-single]").forEach(function (group) {
+    group.addEventListener("click", function (event) {
+      const button = event.target.closest("button");
+      if (!button || !group.contains(button)) return;
+      group.querySelectorAll("button").forEach(function (item) {
+        item.classList.toggle("is-active", item === button);
+      });
+      setStatus("", false);
+    });
+  });
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const categories = selectedCategories();
+    const comment = form.comment.value.trim();
+
+    if (!categories.length) {
+      setStatus("피드백 항목을 하나 이상 선택해주세요.", true);
+      return;
+    }
+
+    if (!comment) {
+      setStatus("짧게라도 의견을 남겨주세요.", true);
+      form.comment.focus();
+      return;
+    }
+
+    const payload = {
+      categories,
+      sentiment: activeText(".portfolio-feedback-sentiment-grid"),
+      score: Number(activeText(".portfolio-feedback-score")),
+      comment,
+      pageUrl: window.location.href,
+      submittedAt: new Date().toISOString(),
+      website: form.website.value,
+    };
+
+    submit.disabled = true;
+    setStatus("피드백을 저장하는 중입니다.", false);
+
+    try {
+      const response = await fetch(form.dataset.feedbackEndpoint || "/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        let message = "저장 중 문제가 발생했습니다.";
+        try {
+          const result = await response.json();
+          if (result && result.error) message = result.error;
+        } catch (_error) {
+          if (response.status === 404) {
+            message = "피드백 저장 API가 아직 배포되지 않았습니다.";
+          }
+        }
+        throw new Error(message);
+      }
+
+      form.reset();
+      form.querySelectorAll("[data-feedback-categories] button").forEach(function (button, index) {
+        button.classList.toggle("is-active", index === 0);
+      });
+      form.querySelectorAll(".portfolio-feedback-sentiment-grid button").forEach(function (button, index) {
+        button.classList.toggle("is-active", index === 0);
+      });
+      form.querySelectorAll(".portfolio-feedback-score button").forEach(function (button) {
+        button.classList.toggle("is-active", button.textContent.trim() === "4");
+      });
+      setStatus("피드백이 저장되었습니다. 감사합니다.", false);
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          event: "feedback_submit",
+          feedback_categories: categories,
+          feedback_sentiment: payload.sentiment,
+          feedback_score: payload.score,
+        });
+      }
+    } catch (_error) {
+      const message = _error.message === "Failed to fetch"
+        ? "피드백 저장 API가 아직 배포되지 않았거나 연결이 허용되지 않았습니다."
+        : (_error.message || "저장 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      setStatus(message, true);
+    } finally {
+      submit.disabled = false;
     }
   });
 })();
