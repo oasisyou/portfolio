@@ -602,8 +602,121 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   overflow: hidden;
   display: none;
 }
+.portfolio-feedback-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -86px;
+  width: 86px;
+  height: 2px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(26,86,219,0), rgba(26,86,219,.62), rgba(26,86,219,0));
+  box-shadow: 0 0 10px rgba(26,86,219,.18);
+  transform-origin: left center;
+  animation: portfolio-feedback-border-run 4s linear infinite;
+}
 body.portfolio-feedback-open .portfolio-feedback-panel {
   display: block;
+}
+@media (min-width: 901px) {
+  .portfolio-feedback-panel {
+    display: block;
+    animation: portfolio-feedback-idle 3.4s ease-in-out infinite;
+  }
+  .portfolio-feedback-toggle {
+    display: none;
+  }
+  .portfolio-feedback-panel:hover,
+  .portfolio-feedback-panel:focus-within,
+  body.portfolio-feedback-active .portfolio-feedback-panel {
+    animation-play-state: paused;
+  }
+  .portfolio-feedback-panel:hover::before,
+  .portfolio-feedback-panel:focus-within::before,
+  body.portfolio-feedback-active .portfolio-feedback-panel::before {
+    animation-play-state: paused;
+    opacity: .58;
+  }
+}
+@keyframes portfolio-feedback-idle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes portfolio-feedback-border-run {
+  0% {
+    top: 0;
+    left: -86px;
+    width: 86px;
+    height: 2px;
+    transform: rotate(0deg);
+  }
+  24% {
+    top: 0;
+    left: 100%;
+    width: 86px;
+    height: 2px;
+    transform: rotate(0deg);
+  }
+  25% {
+    top: -86px;
+    left: calc(100% - 1px);
+    width: 86px;
+    height: 2px;
+    transform: rotate(90deg);
+  }
+  49% {
+    top: 100%;
+    left: calc(100% - 1px);
+    width: 86px;
+    height: 2px;
+    transform: rotate(90deg);
+  }
+  50% {
+    top: calc(100% - 1px);
+    left: 100%;
+    width: 86px;
+    height: 2px;
+    transform: rotate(180deg);
+  }
+  74% {
+    top: calc(100% - 1px);
+    left: -86px;
+    width: 86px;
+    height: 2px;
+    transform: rotate(180deg);
+  }
+  75% {
+    top: 100%;
+    left: 0;
+    width: 86px;
+    height: 2px;
+    transform: rotate(270deg);
+  }
+  99% {
+    top: -86px;
+    left: 0;
+    width: 86px;
+    height: 2px;
+    transform: rotate(270deg);
+  }
+  100% {
+    top: 0;
+    left: -86px;
+    width: 86px;
+    height: 2px;
+    transform: rotate(0deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-feedback-panel,
+  .portfolio-feedback-panel::before {
+    animation: none !important;
+  }
 }
 .portfolio-feedback-head {
   padding: 16px 18px 13px;
@@ -768,7 +881,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <aside class="portfolio-feedback-panel" aria-label="포트폴리오 피드백">
   <div class="portfolio-feedback-head">
     <div class="portfolio-feedback-kicker">portfolio feedback</div>
-    <h3>포트폴리오 피드백 남기기</h3>
+    <h3>포트폴리오 내용에 대해서 피드백을 남겨주세요!</h3>
     <p>부담 없이 큰 항목부터 선택하고, 짧게 의견을 남겨주세요.</p>
   </div>
   <form class="portfolio-feedback-body" data-feedback-form data-feedback-endpoint="https://portfolio-feedback-api.vercel.app/api/feedback">
@@ -1878,8 +1991,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   const form = document.querySelector("[data-feedback-form]");
   if (!toggle || !form) return;
 
+  const panel = document.querySelector(".portfolio-feedback-panel") || form;
   const status = form.querySelector("[data-feedback-status]");
   const submit = form.querySelector(".portfolio-feedback-submit");
+  let feedbackActiveTimer = null;
+
+  function clearFeedbackActiveIfIdle() {
+    if (!panel.matches(":hover") && !panel.contains(document.activeElement)) {
+      body.classList.remove("portfolio-feedback-active");
+    }
+  }
+
+  function markFeedbackActive() {
+    body.classList.add("portfolio-feedback-active");
+    window.clearTimeout(feedbackActiveTimer);
+    feedbackActiveTimer = window.setTimeout(clearFeedbackActiveIfIdle, 2200);
+  }
 
   function setOpen(next) {
     body.classList.toggle("portfolio-feedback-open", next);
@@ -1908,6 +2035,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   toggle.addEventListener("click", function () {
     setOpen(!body.classList.contains("portfolio-feedback-open"));
+    markFeedbackActive();
+  });
+
+  ["pointerdown", "keydown", "input", "focusin"].forEach(function (eventName) {
+    panel.addEventListener(eventName, markFeedbackActive, true);
+  });
+
+  ["mouseleave", "focusout"].forEach(function (eventName) {
+    panel.addEventListener(eventName, function () {
+      window.clearTimeout(feedbackActiveTimer);
+      feedbackActiveTimer = window.setTimeout(clearFeedbackActiveIfIdle, 800);
+    }, true);
   });
 
   form.querySelector("[data-feedback-categories]").addEventListener("click", function (event) {
